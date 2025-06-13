@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: start;
     text-align: center;
-    background: url(../public/images/bg-hero.png) no-repeat center center/cover;
+    background: url(../../../../public/images/bg-hero.png) no-repeat center center/cover;
     width: 100%;
     height: calc(100vh + 25rem);
     padding-top: 12rem;
