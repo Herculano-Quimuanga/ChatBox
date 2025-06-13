@@ -4,7 +4,11 @@ import './final.css'
 function Final() {
     return (
         <>
-            <p>Final Section Works</p>
+            <div className="final">
+                <div className="final__container Section__container">
+                    <img src="/images/img-final.png" alt="Image the app" />
+                </div>
+            </div>
         </>
     )
 }

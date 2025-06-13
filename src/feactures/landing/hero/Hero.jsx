@@ -11,8 +11,14 @@ function Hero() {
 
             <div className="hero__actions">
               <p>Lorem ipsum dolor sit amet consectetur adipisicing. Labore excepturi quia zoue.</p>
-              <button className="btn">Log In</button>
-              <button className="btn_2">Sign In</button>
+              <button className="btn">
+                <img src="/icons/user-blue.svg" alt="" />
+                Log In
+              </button>
+              <button className="btn_2">
+                <img src="/icons/user-plus.svg" alt="" />
+                Sign In
+              </button>
             </div>
           </div>
         </div>

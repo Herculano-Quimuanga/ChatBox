@@ -1,7 +1,8 @@
-:root{
+:root {
     /* Color Variables */
     --color-primary: #014cfd;
     --color-secondary: #edf1f4;
+    --color-ligth: #97999b;
     --color-text: #2d2d2d;
     --back-color: #1a1a1a;
     --color-white: #ffffff;
@@ -26,6 +27,7 @@ body {
     font-family: "Poppins";
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 a {
@@ -40,12 +42,19 @@ button {
     color: inherit;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
     margin: 0;
     padding: 0;
 }
 
-ul, ol {
+ul,
+ol {
     list-style: none;
 }
 
@@ -61,8 +70,9 @@ ul, ol {
 }
 
 .btn,
-.btn_2 {
-    display: inline-flex;
+.btn_2,
+.btn_3 {
+    display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
@@ -71,10 +81,16 @@ ul, ol {
     font-size: .9rem;
     font-weight: 600;
     border-radius: var(--border-radius-base);
-    padding: 1rem 1.75rem;
+
+    img {
+        width: 2rem;
+        height: 2rem;
+        transform: translateY(5px);
+    }
 }
 
-.btn{
+.btn {
+    padding: .8rem 1.75rem;
     background-color: var(--color-white);
     color: var(--color-primary);
 }
@@ -83,12 +99,61 @@ ul, ol {
     background-color: transparent;
     color: var(--color-white);
     border: 2px solid var(--color-white);
+    padding: .65rem 1.55rem;
+}
+
+.btn_3 {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: .85rem 1.55rem;
+    box-shadow: 0 4px 12px var(--color-primary);
 }
 
 .btn:hover,
-.btn:focus,
-.btn_2:hover,
-.btn_2:focus {
+.btn_2:hover {
     box-shadow: 0 3px 12px rgba(255, 255, 255, 0.5);
     transform: scale(1.05);
+}
+
+.btn_3:hover {
+    transform: scale(1.05);
+}
+
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 0rem;
+
+    img {
+        width: 3rem;
+        height: 3rem;
+        margin: 0;
+    }
+
+    span {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: var(--color-white);
+        transform: translate(-0.65rem, -0.35rem);
+    }
+}
+
+.section__title {
+    font-weight: normal;
+    font-size: 2.35rem;
+    color: var(--color-text);
+
+    span {
+        color: var(--color-primary);
+        font-weight: 700;
+    }
+}
+
+.section__description {
+    color: var(--color-ligth);
+    text-align: center;
+    font-size: 1.125rem;
+    line-height: 28px;
 }

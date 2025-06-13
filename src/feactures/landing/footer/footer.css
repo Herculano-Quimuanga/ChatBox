@@ -1,0 +1,99 @@
+.footer {
+    background-color: var(--back-color);
+}
+
+.footer__container {
+    padding: 1rem 0;
+}
+
+.footer__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3rem 0;
+    border-bottom: 0.1rem solid var(--color-ligth);
+}
+
+.footer__top h1 {
+    color: var(--color-white);
+    font-size: 4rem;
+    max-width: 600px;
+    line-height: 4.25rem;
+}
+
+.footer__btns {
+    display: flex;
+    column-gap: 1.5rem;
+    align-items: center;
+}
+
+.footer__btns button {
+    width: 12rem;
+    font-weight: 500;
+}
+
+.footer__content{
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    padding: 3rem 0;
+}
+
+.footer__description{
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+}
+
+.footer__description .logo{
+    margin-bottom: 2rem;
+}
+
+.footer__description p{
+    color: var(--color-ligth);
+    line-height: 25px;
+    font-size: .9rem;
+    margin-bottom: 1rem;
+}
+
+.footer__description h4{
+    color: var(--color-secondary);
+    font-weight: 500;
+}
+
+.footer__links{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 2.5rem;
+}
+
+.footer__links ul{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.footer__links ul h3{
+    color: var(--color-white);
+    font-weight: 500;
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+}
+
+.footer__links a{
+    color: var(--color-ligth);
+    transition: color .5s ease-in-out;
+}
+
+.footer__links a:hover{
+    color: var(--color-secondary);
+}
+
+.footer__copy{
+    text-align: center;
+    padding: .35rem 0;
+    color: var(--color-secondary);
+    font-size: 1rem;
+}

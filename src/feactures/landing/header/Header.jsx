@@ -22,7 +22,7 @@ function Header() {
     <>
       <div className={scrolled ? 'header scrolled' : 'header'}>
         <header className="header__container Section__container">
-          <div className="header__logo">
+          <div className="logo">
             <img src="icons/message.svg" alt="ChatBox Logo" />
             <span>ChatBox</span>
           </div>

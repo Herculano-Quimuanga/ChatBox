@@ -1,0 +1,17 @@
+.final{
+    background: url(../../../../public/images/bg-final.png);
+}
+
+.final__container{
+    padding: 7rem 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.final__container img{
+    width: 100%;
+    object-fit: cover;
+    border-radius: 1rem 1rem 0 0;
+}
