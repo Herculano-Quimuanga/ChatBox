@@ -8,8 +8,8 @@ import Reasons from './features/landing/reasons/Reasons'
 import Destaks from './features/landing/destack/Destaks'
 import Final from './features/landing/final/Final'
 import Footer from './features/landing/footer/Footer'
-import Login from './features/auth/login/login'
-import Sign from './features/auth/sign/sign'
+import Login from './features/auth/login/Login'
+import Sign from './features/auth/sign/Sign'
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useEffect } from 'react'
