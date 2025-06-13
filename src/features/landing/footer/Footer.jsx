@@ -8,9 +8,9 @@ function Footer() {
         <div className="footer__container Section__container">
 
           <div className="footer__top">
-            <h1>Want to stay Connected?</h1>
+            <h1 data-aos="fade-down" data-aos-duration="1000">Want to stay Connected?</h1>
 
-            <div className="footer__btns">
+            <div className="footer__btns" data-aos="fade-down" data-aos-duration="1000">
               <button className="btn_3">
                 <img src="/icons/user.svg" alt="" />
                 Log In
@@ -23,7 +23,7 @@ function Footer() {
           </div>
 
           <div className="footer__content">
-            <div className="footer__description">
+            <div className="footer__description" data-aos="fade-up" data-aos-duration="1000">
               <div className="logo">
                 <img src="icons/message.svg" alt="ChatBox Logo" />
                 <span>ChatBox</span>
@@ -32,20 +32,20 @@ function Footer() {
               <h4>Luanda - Angola | KK. R. 2B</h4>
             </div>
             <div className="footer__links">
-              <ul>
+              <ul data-aos="fade-up" data-aos-duration="1000">
                 <h3>Home</h3>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">Desctck</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#reasons">Reasons</a></li>
+                <li><a href="#destack">Destack</a></li>
               </ul>
 
-              <ul>
+              <ul data-aos="fade-up" data-aos-duration="1000">
                 <h3>Features</h3>
                 <li><a href="#">Log in</a></li>
                 <li><a href="#">Sign in</a></li>
               </ul>
 
-              <ul>
+              <ul data-aos="fade-up" data-aos-duration="1000">
                 <h3>Social Midia</h3>
                 <li><a href="#">GitHub</a></li>
                 <li><a href="#">LinkedIn</a></li>

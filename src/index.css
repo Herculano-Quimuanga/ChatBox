@@ -23,11 +23,13 @@
     font-weight: 300;
 }
 
+html,
 body {
     font-family: "Poppins";
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 a {
@@ -125,6 +127,7 @@ ol {
     align-items: center;
     justify-content: center;
     column-gap: 0rem;
+    cursor: pointer;
 
     img {
         width: 3rem;

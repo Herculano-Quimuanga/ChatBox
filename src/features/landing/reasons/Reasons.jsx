@@ -4,7 +4,7 @@ import './reasons.css'
 function Reasons() {
     return (
         <>
-            <div className="reasons">
+            <div className="reasons" id="reasons">
                 <div className="reasons__container Section__container">
                     <div className="reasons__text">
                         <span className="reasons__section">Featured</span>
@@ -13,7 +13,7 @@ function Reasons() {
                     </div>
 
                     <div className="reasons__content">
-                        <div className="reasons__card">
+                        <div className="reasons__card" data-aos="flip-left" data-aos-duration="2000">
                             <figure className="icon">
                                 <img src="/icons/faceHappy.svg" alt="" />
                             </figure>
@@ -23,7 +23,7 @@ function Reasons() {
                             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio.</p>
                         </div>
 
-                        <div className="reasons__card">
+                        <div className="reasons__card" data-aos="flip-left" data-aos-duration="2000" data-aos-delay="600">
                             <figure className="icon">
                                 <img src="/icons/alarm.svg" alt="" />
                             </figure>
@@ -33,7 +33,7 @@ function Reasons() {
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi.</p>
                         </div>
 
-                        <div className="reasons__card">
+                        <div className="reasons__card" data-aos="flip-left" data-aos-duration="2000" data-aos-delay="1200">
                             <figure className="icon">
                                 <img src="/icons/lock.svg" alt="" />
                             </figure>

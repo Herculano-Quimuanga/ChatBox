@@ -5,6 +5,7 @@
     flex-direction: column;
     row-gap: 6rem;
     margin-bottom: 5rem;
+    padding: 3rem 0;
 }
 
 .destack__content{

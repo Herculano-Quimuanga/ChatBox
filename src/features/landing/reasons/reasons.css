@@ -42,14 +42,14 @@
 
 .reasons__card{
     width: 100%;
-    background: url(../../../../public/images/bg-card.png);
+    background-image: url(../../../../public/images/bg-card.png);
     border-radius: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     padding: 2rem;
-    transition: background .5s ease-in-out;
+    transition: background-image 5s linear;
 }
 
 .reasons__card .icon{
@@ -81,7 +81,7 @@
 }
 
 .reasons__card:hover{
-    background: url(../../../../public/images/bg-card-hover.png);
+    background-image: url(../../../../public/images/bg-card-hover.png);
 }
 
 .reasons__card:hover p,

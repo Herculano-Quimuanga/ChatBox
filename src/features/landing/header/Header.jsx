@@ -30,16 +30,16 @@ function Header() {
           <nav className="header__nav">
             <ul>
               <li>
-                <a href="#features" className="header__links">Home</a>
+                <a href="#hero" className="header__links">Home</a>
               </li>
               <li>
-                <a href="#features" className="header__links">Features</a>
+                <a href="#reasons" className="header__links">Reasons</a>
               </li>
               <li>
-                <a href="#pricing" className="header__links">About</a>
+                <a href="#about" className="header__links">About</a>
               </li>
               <li>
-                <a href="#contact" className="header__links">Contact</a>
+                <a href="#destack" className="header__links">Destack</a>
               </li>
             </ul>
           </nav>
