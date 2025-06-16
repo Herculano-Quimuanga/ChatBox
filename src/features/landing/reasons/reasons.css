@@ -1,4 +1,4 @@
-.reasons__container{
+.reasons__container {
     padding: 7rem 0;
     display: flex;
     align-items: center;
@@ -7,14 +7,14 @@
     row-gap: 3rem;
 }
 
-.reasons__text{
+.reasons__text {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
 
-.reasons__section{
+.reasons__section {
     background-color: var(--color-secondary);
     color: var(--color-primary);
     font-weight: 600;
@@ -24,15 +24,15 @@
     margin-bottom: 1rem;
 }
 
-.reasons__text .section__title{
+.reasons__text .section__title {
     margin-bottom: 1.5rem;
 }
 
-.reasons__text .section__description{
+.reasons__text .section__description {
     max-width: 600px;
 }
 
-.reasons__content{
+.reasons__content {
     width: 100%;
     display: grid;
     place-items: center;
@@ -40,7 +40,7 @@
     gap: 1rem;
 }
 
-.reasons__card{
+.reasons__card {
     width: 100%;
     background-image: url(../../../../public/images/bg-card.png);
     border-radius: 2rem;
@@ -52,7 +52,7 @@
     transition: background-image 5s linear;
 }
 
-.reasons__card .icon{
+.reasons__card .icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -62,29 +62,59 @@
     height: 3.95rem;
     margin-bottom: 2rem;
 
-    img{
+    img {
         width: 2.35rem;
         height: 2.35rem;
     }
 }
 
-.reasons__card h5{
+.reasons__card h5 {
     font-size: 1.3rem;
     color: var(--color-text);
     font-weight: 600;
     margin-bottom: 1rem;
 }
 
-.reasons__card p{
+.reasons__card p {
     text-align: center;
     line-height: 28px;
 }
 
-.reasons__card:hover{
+.reasons__card:hover {
     background-image: url(../../../../public/images/bg-card-hover.png);
 }
 
 .reasons__card:hover p,
-.reasons__card:hover h5{
+.reasons__card:hover h5 {
     color: var(--color-white);
+}
+
+/* Responsividade Reasons */
+@media (width < 1200px) {
+    .reasons__content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .reasons__container {
+        padding: 7rem 3.5rem;
+    }
+
+    .reasons__card {
+        flex-grow: 1;
+        flex: 1 1 300px;
+    }
+
+    .reasons__text .section__title {
+        text-align: center;
+        width: 100%;
+    }
+}
+
+@media (width < 576px) {
+    .reasons__container {
+        padding: 7rem 1.5rem;
+    }
 }

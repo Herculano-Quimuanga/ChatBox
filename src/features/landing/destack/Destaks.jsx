@@ -8,10 +8,12 @@ function Destaks() {
                 <div className="destack__container Section__container">
                     <div className="destack__content" id="about">
                         <div className="destack__text">
-                            <h2 className="section__title">Communicate more efficiently by using <span>ChatBox.</span></h2>
-                            <p className="section__description">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias est cum voluptates. Dicta neque consequatur repellat minus similique labore placeat.
-                            </p>
+                            <div>
+                                <h2 className="section__title">Communicate more efficiently by using <span>ChatBox.</span></h2>
+                                <p className="section__description">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias est cum voluptates. Dicta neque consequatur repellat minus similique labore placeat.
+                                </p>
+                            </div>
                             <div className="destack__stats">
                                 <div className="stat" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
                                     <h3 className="stat__title">1M+</h3>

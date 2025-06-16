@@ -13,7 +13,7 @@ function Reasons() {
                     </div>
 
                     <div className="reasons__content">
-                        <div className="reasons__card" data-aos="flip-left" data-aos-duration="2000">
+                        <div className="reasons__card" data-aos="flip-left" data-aos-duration="1000">
                             <figure className="icon">
                                 <img src="/icons/faceHappy.svg" alt="" />
                             </figure>
@@ -23,7 +23,7 @@ function Reasons() {
                             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Odio.</p>
                         </div>
 
-                        <div className="reasons__card" data-aos="flip-left" data-aos-duration="2000" data-aos-delay="600">
+                        <div className="reasons__card" data-aos="flip-left" data-aos-duration="1000" data-aos-delay="500">
                             <figure className="icon">
                                 <img src="/icons/alarm.svg" alt="" />
                             </figure>
@@ -33,7 +33,7 @@ function Reasons() {
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi.</p>
                         </div>
 
-                        <div className="reasons__card" data-aos="flip-left" data-aos-duration="2000" data-aos-delay="1200">
+                        <div className="reasons__card" data-aos="flip-left" data-aos-duration="1000" data-aos-delay="1000">
                             <figure className="icon">
                                 <img src="/icons/lock.svg" alt="" />
                             </figure>

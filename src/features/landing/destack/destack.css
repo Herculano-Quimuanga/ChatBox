@@ -1,4 +1,4 @@
-.destack__container{
+.destack__container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -8,68 +8,157 @@
     padding: 3rem 0;
 }
 
-.destack__content{
+.destack__content {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.destack__text{
+.destack__text {
     text-align: left;
     max-width: 600px;
 }
 
-.destack__text .section__title{
+.destack__text .section__title {
     max-width: 450px;
     margin-bottom: 1.5rem;
 }
 
-.destack__text .min{
+.destack__text .min {
     max-width: 420px;
 }
 
-.destack__text .section__description{
+.destack__text .section__description {
     text-align: left;
     margin-bottom: 3rem;
     max-width: 500px;
 }
 
-.destack__stats{
+.destack__stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
     column-gap: 1rem;
 }
 
-.stat{
+.stat {
     display: block;
 }
 
-.stat__title{
+.stat__title {
     font-size: 2rem;
     font-weight: 600;
     color: var(--color-text);
 }
 
-.stat__description{
+.stat__description {
     font-size: 1rem;
     color: var(--color-ligth);
 }
 
-.destack__text button{
+.destack__text button {
     width: 12rem;
     font-weight: 500;
 }
 
-.destack__image{
+.destack__image {
     max-width: 600px;
     height: auto;
 }
 
-.destack__image img{
+.destack__image img {
     width: 100%;
     height: auto;
     object-fit: cover;
     border-radius: 2rem;
+}
+
+/* Responsividade Destack */
+@media (width < 1200px) {
+    .destack__container {
+        padding: 3rem 3.5rem;
+    }
+}
+
+@media (width < 992px) {
+
+    .destack__content {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .destack__text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .destack__text .section__title {
+        max-width: 100%;
+    }
+
+    .destack__text .section__description {
+        text-align: center;
+        margin-bottom: 3rem;
+        max-width: 80%;
+    }
+
+    .destack__stats {
+        margin-bottom: 3rem;
+    }
+
+    .destack__content:nth-child(2) {
+        margin-top: 3rem;
+        flex-direction: column-reverse;
+    }
+
+    .destack__text .min {
+        max-width: 100%;
+    }
+
+    button {
+        margin-bottom: 3rem;
+    }
+}
+
+@media (width < 576px) {
+
+    .destack__container {
+        padding: 3rem 1rem;
+    }
+
+    .destack__text .section__description {
+        max-width: 100%;
+    }
+}
+
+@media (width < 442px) {
+    .destack__stats {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+
+    .stat {
+        flex: 1 130px;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .stat__title {
+        font-size: 1.5rem;
+    }
+
+    .stat__description {
+        font-size: 0.9rem;
+    }
+
+    .destack__text button {
+        width: 100%;
+    }
 }
