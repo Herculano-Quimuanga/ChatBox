@@ -32,14 +32,14 @@
     font-weight: 500;
 }
 
-.footer__content{
+.footer__content {
     display: flex;
     align-items: start;
     justify-content: space-between;
     padding: 3rem 0;
 }
 
-.footer__description{
+.footer__description {
     max-width: 350px;
     display: flex;
     flex-direction: column;
@@ -47,51 +47,51 @@
     justify-content: start;
 }
 
-.footer__description .logo{
+.footer__description .logo {
     margin-bottom: 2rem;
 }
 
-.footer__description p{
+.footer__description p {
     color: var(--color-ligth);
     line-height: 25px;
     font-size: .9rem;
     margin-bottom: 1rem;
 }
 
-.footer__description h4{
+.footer__description h4 {
     color: var(--color-secondary);
     font-weight: 500;
 }
 
-.footer__links{
+.footer__links {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     column-gap: 2.5rem;
 }
 
-.footer__links ul{
+.footer__links ul {
     display: flex;
     flex-direction: column;
     row-gap: 1rem;
 }
 
-.footer__links ul h3{
+.footer__links ul h3 {
     color: var(--color-white);
     font-weight: 500;
     font-size: 1.125rem;
     margin-bottom: 1rem;
 }
 
-.footer__links a{
+.footer__links a {
     color: var(--color-ligth);
     transition: color .5s ease-in-out;
 }
 
-.footer__links a:hover{
+.footer__links a:hover {
     color: var(--color-secondary);
 }
 
-.footer__copy{
+.footer__copy {
     text-align: center;
     padding: .35rem 0;
     color: var(--color-secondary);
@@ -99,3 +99,65 @@
 }
 
 /* Responsividade Footer */
+@media (width < 1200px) {
+    .footer__container {
+        padding: 1rem 3.5rem;
+    }
+
+    .footer__top {
+        flex-direction: column;
+        justify-content: center;
+        row-gap: 2rem;
+        padding: 1.5rem 0;
+    }
+
+    .footer__top h1 {
+        font-size: 4rem;
+        max-width: 800px;
+        text-align: center;
+    }
+
+    .footer__content{
+        flex-direction: column-reverse;
+        align-items: center;
+        row-gap: 2rem;
+    }
+
+    .footer__description{
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .footer__links{
+        width: 100%;
+        padding: 0;
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+}
+
+@media (width < 576px) {
+        .footer__container {
+        padding: 1rem 1.5rem;
+    }
+}
+
+@media (width < 442px) {
+    .footer__links {
+        flex-wrap: nowrap;
+        flex-direction: column;
+    }
+
+    .footer__top h1 {
+    font-size: 2.5rem;
+    line-height: 45px;
+}
+
+.footer__btns{
+    flex-direction: column;
+    row-gap: 0rem;
+}
+}

@@ -20,7 +20,7 @@
 }
 
 .banner__image img {
-    display: inline;
+    display: block;
     object-fit: cover;
     width: 100%;
     height: 100%;
@@ -28,3 +28,54 @@
 }
 
 /* Responsividade Banner */
+
+@media (width < 1200px) {
+
+    .banner__image {
+        margin-bottom: 18rem;
+    }
+
+    .banner__content {
+        top: -15rem;
+        padding: 0 3.5rem;
+    }
+
+    .banner__image img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+@media (width < 778px) {
+    .banner__image {
+        margin-bottom: 8rem;
+    }
+
+    .banner__content {
+        top: -10rem;
+        padding: 0 3.5rem;
+    }
+}
+
+@media (width < 576px) {
+    .banner__image{
+        margin-bottom: 12rem;
+    }
+
+    .banner__content {
+        top: -10rem;
+        padding: 0;
+    }
+}
+
+@media (width < 442px) {
+    .banner__image{
+        margin-bottom: 7rem;
+    }
+}
+
+@media (width < 390px) {
+    .banner__content {
+        top: -7rem;
+    }
+}

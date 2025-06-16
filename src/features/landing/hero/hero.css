@@ -54,8 +54,74 @@
     text-align: left;
 }
 
-.hero__actions button{
+.hero__actions button {
     width: 12rem;
 }
 
 /* Responsividade Hero */
+@media (width < 1200px) {
+    .hero__container {
+        padding: 0 3.5rem;
+    }
+}
+
+@media (width < 992px) {
+    .hero {
+        padding-top: 8rem;
+    }
+
+    .hero__content {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .hero__content .hero__title {
+        font-size: 4rem;
+        text-align: center;
+        width: 85%;
+        line-height: 85px;
+    }
+
+    .hero__actions {
+        align-items: center;
+        margin-top: 2rem;
+        width: 100%;
+    }
+
+    .hero__actions p {
+        text-align: center;
+        width: 55%;
+    }
+}
+
+@media (width < 778px) {
+    .hero__content .hero__title {
+        font-size: 3rem;
+        width: 90%;
+        line-height: 65px;
+        margin-bottom: 1rem;
+    }
+
+    .hero__actions {
+        margin-top: 1rem;
+        row-gap: 1.5rem;
+    }
+
+    .hero__actions button {
+        margin-bottom: 0;
+    }
+
+    .hero__container {
+        padding: 0 1.5rem;
+    }
+
+}
+
+@media (width < 442px) {
+    .hero__actions p {
+        text-align: center;
+        width: 100%;
+    }
+}
