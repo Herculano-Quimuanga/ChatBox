@@ -1,42 +1,19 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import Header from './features/landing/header/Header'
-import Hero from './features/landing/hero/Hero'
-import Banner from './features/landing/banner/Banner'
-import Reasons from './features/landing/reasons/Reasons'
-import Destaks from './features/landing/destack/Destaks'
-import Final from './features/landing/final/Final'
-import Footer from './features/landing/footer/Footer'
-import Login from './features/auth/login/Login'
-import Sign from './features/auth/sign/Sign'
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { useEffect } from 'react'
+// src/main.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
+import { BrowserRouter } from 'react-router-dom';
+import './index.css';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
-function Main() {
-  useEffect(() => {
-    AOS.init({
-      duration: 1000, 
-      once: false,     
-    });
-  }, []);
+const clientId = '586099473685-v7626senhr9sn7b0h8tuueb2ekc7sl73.apps.googleusercontent.com';
 
-  return (
-    <>
-      <Header/>
-      <Hero />
-      <Banner />
-      <Reasons />
-      <Destaks />
-      <Final />
-      <Footer/>
-    </>
-  );
-}
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <Main />
-  </StrictMode>,
-)
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <GoogleOAuthProvider clientId={clientId}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </GoogleOAuthProvider>
+  </React.StrictMode>
+);

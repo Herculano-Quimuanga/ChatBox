@@ -1,7 +1,9 @@
 import React from "react"
 import './destack.css'
+import useNavigation from "../../../hooks/useNavigation";
 
 function Destaks() {
+      const { goTo } = useNavigation();
     return (
         <>
             <div className="destack">
@@ -11,7 +13,7 @@ function Destaks() {
                             <div>
                                 <h2 className="section__title">Communicate more efficiently by using <span>ChatBox.</span></h2>
                                 <p className="section__description">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias est cum voluptates. Dicta neque consequatur repellat minus similique labore placeat.
+                                    Chat smarter with an AI that understands your needs. Whether it's casual conversation or quick answers, ChatBox is built to keep your communication smooth, productive, and effortless.
                                 </p>
                             </div>
                             <div className="destack__stats">
@@ -42,9 +44,9 @@ function Destaks() {
                         <div className="destack__text">
                             <h2 className="section__title min">Send messages in <span>Real Time</span>, without any delay between us</h2>
                             <p className="section__description">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias est cum voluptates. Dicta neque consequatur repellat minus similique labore placeat.
+                               Experience seamless conversations where every message arrives instantly, keeping you connected as if you were in the same room
                             </p>
-                            <button className="btn_3" data-aos="fade-up">Lean More</button>
+                            <button className="btn_3" data-aos="fade-up" onClick={() => goTo('/sign')}>Lean More</button>
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,9 @@
 import React from "react"
 import './footer.css'
+import useNavigation from "../../../hooks/useNavigation";
 
 function Footer() {
+  const { goTo } = useNavigation();
   return (
     <>
       <div className="footer">
@@ -11,11 +13,11 @@ function Footer() {
             <h1 data-aos="fade-down" data-aos-duration="1000">Want to stay Connected?</h1>
 
             <div className="footer__btns" data-aos="fade-down" data-aos-duration="1000">
-              <button className="btn_3">
+              <button className="btn_3" onClick={() => goTo('/login')}>
                 <img src="/icons/user.svg" alt="" />
                 Log In
               </button>
-              <button className="btn_2">
+              <button className="btn_2" onClick={() => goTo('/sign')}>
                 <img src="/icons/user-plus.svg" alt="" />
                 Sign In
               </button>
@@ -24,11 +26,11 @@ function Footer() {
 
           <div className="footer__content">
             <div className="footer__description" data-aos="fade-up" data-aos-duration="1000">
-              <div className="logo">
+              <div className="logo" onClick={() => goTo('/home')}>
                 <img src="icons/message.svg" alt="ChatBox Logo" />
                 <span>ChatBox</span>
               </div>
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta error aliquam obcaecati dolorem.</p>
+              <p>Our platform blends speed, reliability, and intuitive design to keep your conversations flowing—anytime, anywhere</p>
               <h4>Luanda - Angola | KK. R. 2B</h4>
             </div>
             <div className="footer__links">

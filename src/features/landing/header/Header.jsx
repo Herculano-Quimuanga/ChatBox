@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "./header.css";
 import "../../../index.css";
+import useNavigation from '../../../hooks/useNavigation';
 
 function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -20,10 +21,12 @@ function Header() {
     setIsMenuOpen(prev => !prev);
   };
 
+  const { goTo } = useNavigation();
+
   return (
     <div className={scrolled ? 'header scrolled' : 'header'}>
       <header className="header__container Section__container">
-        <div className="logo">
+        <div className="logo" onClick={() => goTo('/home')}>
           <img src="icons/message.svg" alt="ChatBox Logo" />
           <span>ChatBox</span>
         </div>
@@ -38,7 +41,7 @@ function Header() {
         </nav>
 
         <div className="header__buttons">
-          <button className="btn">Try For Free</button>
+          <button className="btn" onClick={() => goTo('/login')}>Try For Free</button>
         </div>
 
         <div className="header__menu__toggle">
