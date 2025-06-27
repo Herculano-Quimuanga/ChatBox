@@ -1,29 +1,66 @@
-import React, { useState } from 'react'
-import './login.css'
-import { FaEye, FaEyeSlash } from 'react-icons/fa'
-import { jwtDecode } from 'jwt-decode'
-import { useGoogleLogin } from '@react-oauth/google'
-import useNavigation from '../../../hooks/useNavigation'
+import React, { useState } from 'react';
+import './login.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useGoogleLogin } from '@react-oauth/google';
+import useNavigation from '../../../hooks/useNavigation';
+import axios from 'axios';
 
 function Login() {
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
   const { goTo } = useNavigation();
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev)
-  }
+  const [form, setForm] = useState({ email: "", senha: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
-  const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
-      const token = tokenResponse.credential || tokenResponse.access_token;
-      const user = jwtDecode(token);
-      console.log('Usuário:', user);
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:3000/api/usuarios/login", form);
+      console.log("Login realizado:", res.data.user);
+      localStorage.setItem("usuario", JSON.stringify(res.data.user));
+      alert("Login com sucesso!");
+      goTo('/home'); // redireciona após login
+    } catch (err) {
+      console.error("Erro no login:", err.response?.data || err.message);
+      alert("Erro no login: " + (err.response?.data?.error || err.message));
+    }
+  };
+
+  const loginGoogle = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        const googleRes = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: {
+            Authorization: `Bearer ${tokenResponse.access_token}`,
+          },
+        });
+
+        const { name, email, picture } = googleRes.data;
+
+        const res = await axios.post("http://localhost:3000/api/usuarios/google", {
+          nome: name,
+          email,
+          photo: picture,
+        });
+
+        console.log("Usuário autenticado:", res.data.user);
+        localStorage.setItem("usuario", JSON.stringify(res.data.user));
+        goTo('/home');
+      } catch (err) {
+        console.error("Erro durante login com Google:", err);
+        alert("Erro no login com Google");
+      }
     },
     onError: () => {
-      console.error('Falha ao autenticar com Google');
+      console.log("Erro no login com Google");
     },
-    flow: 'implicit', // ou 'auth-code' quando usar backend
   });
 
   return (
@@ -48,7 +85,7 @@ function Login() {
           </div>
         </div>
 
-        <form action="" method="post" className='Form__container'>
+        <form className='Form__container' onSubmit={handleSubmit}>
           <div className="form__content">
             <h3>Log in</h3>
 
@@ -58,29 +95,42 @@ function Login() {
                 <i>
                   <img src="/icons/envelope.svg" alt="" />
                 </i>
-                <input type="email" name="" id="" placeholder='youremail@gmail.com' />
+                <input
+                  type="email"
+                  name="email"
+                  id="emailUser"
+                  placeholder='youremail@gmail.com'
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                />
               </div>
             </div>
 
             <div className="form__camp">
-              <label htmlFor="emailUser">Password</label>
+              <label htmlFor="PassUser">Password</label>
               <div className="Input__Camp">
                 <i>
                   <img src="/icons/lock.svg" alt="" />
                 </i>
-                <input type={showPassword ? 'text' : 'password'} value={password}
-                  onChange={(e) => setPassword(e.target.value)} name="" id="" placeholder='********' />
-                <span
-                  onClick={togglePasswordVisibility}
-                  style={{ cursor: 'pointer' }}>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="senha"
+                  id="PassUser"
+                  placeholder='********'
+                  value={form.senha}
+                  onChange={handleChange}
+                  required
+                />
+                <span onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }}>
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>
             </div>
 
-            <button className="btn_3" type='button'>Log in</button>
+            <button className="btn_3" type='submit'>Log in</button>
 
-            <p>Don´t have an account? <button type="button" className='GotoSignUp' onClick={() => goTo('/sign')}>Sign In</button></p>
+            <p>Don't have an account? <button type="button" className='GotoSignUp' onClick={() => goTo('/sign')}>Sign Up</button></p>
 
             <div className="outhers">
               <span></span>
@@ -88,13 +138,8 @@ function Login() {
               <span></span>
             </div>
 
-            <button type="button" onClick={() => login()} className='LogGoogle'>
-              <img
-                src="/icons/google.svg"
-                alt="Google"
-                width="18"
-                height="18"
-              />
+            <button type="button" onClick={loginGoogle} className='LogGoogle'>
+              <img src="/icons/google.svg" alt="Google" width="18" height="18" />
               Log in with Google
             </button>
 
@@ -102,7 +147,7 @@ function Login() {
         </form>
       </div>
     </div>
-  )
+  );
 }
 
-export default Login
+export default Login;

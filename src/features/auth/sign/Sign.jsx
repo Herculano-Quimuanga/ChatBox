@@ -1,79 +1,129 @@
-import './sign.css'
-import React, { useState } from 'react'
-import { FaEye, FaEyeSlash } from 'react-icons/fa'
-import { jwtDecode } from 'jwt-decode'
-import { useGoogleLogin } from '@react-oauth/google'
-import useNavigation from '../../../hooks/useNavigation'
+import './sign.css';
+import React, { useState } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useGoogleLogin } from '@react-oauth/google';
+import useNavigation from '../../../hooks/useNavigation';
+import axios from 'axios';
 
 function Sign() {
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
   const { goTo } = useNavigation();
+  const [form, setForm] = useState({ nome: "", email: "", senha: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev)
-  }
+    setShowPassword(prev => !prev);
+  };
 
-  const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => {
-      const token = tokenResponse.credential || tokenResponse.access_token;
-      const user = jwtDecode(token);
-      console.log('Usuário:', user);
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:3000/api/usuarios/register", form);
+      console.log("Usuário cadastrado:", res.data.user);
+      localStorage.setItem("usuario", JSON.stringify(res.data.user));
+      alert("Cadastro feito com sucesso!");
+      goTo('/home');
+    } catch (err) {
+      console.error("Erro no cadastro:", err.response?.data || err.message);
+      alert("Erro no cadastro: " + (err.response?.data?.error || err.message));
+    }
+  };
+
+  const loginGoogle = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        const googleRes = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: {
+            Authorization: `Bearer ${tokenResponse.access_token}`,
+          },
+        });
+
+        const { name, email, picture } = googleRes.data;
+
+        const res = await axios.post("http://localhost:3000/api/usuarios/google", {
+          nome: name,
+          email,
+          photo: picture,
+        });
+
+        console.log("Usuário Criado e Autenticado:", res.data.user);
+        localStorage.setItem("usuario", JSON.stringify(res.data.user));
+        goTo('/home');
+      } catch (err) {
+        console.error("Erro durante login com Google:", err);
+        alert("Erro no login com Google");
+      }
     },
     onError: () => {
-      console.error('Falha ao autenticar com Google');
+      console.log("Erro no login com Google");
     },
-    flow: 'implicit',
   });
 
   return (
     <div className='sign'>
       <div className="sign__container">
 
-        <form action="" method="post" className='Form__container'>
+        <form className='Form__container' onSubmit={handleSubmit}>
           <div className="form__content">
             <h3>Sign in</h3>
 
             <div className="form__camp">
-              <label htmlFor="emailUser">User name</label>
+              <label htmlFor="NameUser">User name</label>
               <div className="Input__Camp">
-                <i>
-                  <img src="/icons/user-fill.svg" alt="" />
-                </i>
-                <input type="text" name="" id="" placeholder='Enter your name' />
+                <i><img src="/icons/user-fill.svg" alt="" /></i>
+                <input
+                  type="text"
+                  name="nome"
+                  id="NameUser"
+                  placeholder="Enter your name"
+                  value={form.nome}
+                  onChange={handleChange}
+                  required
+                />
               </div>
             </div>
-
 
             <div className="form__camp">
               <label htmlFor="emailUser">Email address</label>
               <div className="Input__Camp">
-                <i>
-                  <img src="/icons/envelope.svg" alt="" />
-                </i>
-                <input type="email" name="" id="" placeholder='youremail@gmail.com' />
+                <i><img src="/icons/envelope.svg" alt="" /></i>
+                <input
+                  type="email"
+                  name="email"
+                  id="emailUser"
+                  placeholder="youremail@gmail.com"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+                />
               </div>
             </div>
 
             <div className="form__camp">
-              <label htmlFor="emailUser">Password</label>
+              <label htmlFor="PassUser">Password</label>
               <div className="Input__Camp">
-                <i>
-                  <img src="/icons/lock.svg" alt="" />
-                </i>
-                <input type={showPassword ? 'text' : 'password'} value={password}
-                  onChange={(e) => setPassword(e.target.value)} name="" id="" placeholder='Enter your password' />
-                <span
-                  onClick={togglePasswordVisibility}
-                  style={{ cursor: 'pointer' }}>
+                <i><img src="/icons/lock.svg" alt="" /></i>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="senha"
+                  id="PassUser"
+                  placeholder="Enter your password"
+                  value={form.senha}
+                  onChange={handleChange}
+                  required
+                />
+                <span onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }}>
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>
             </div>
 
-            <button className="btn_3" type='button'>Sign In</button>
+            <button className="btn_3" type="submit">Sign In</button>
 
-            <p>Have an account? <button type="button" className='GotoSignUp' onClick={() => goTo('/login')}>Log In</button></p>
+            <p>Have an account? <button type="button" className="GotoSignUp" onClick={() => goTo('/login')}>Log In</button></p>
 
             <div className="outhers">
               <span></span>
@@ -81,13 +131,8 @@ function Sign() {
               <span></span>
             </div>
 
-            <button type="button" onClick={() => login()} className='LogGoogle'>
-              <img
-                src="/icons/google.svg"
-                alt="Google"
-                width="18"
-                height="18"
-              />
+            <button type="button" onClick={loginGoogle} className="LogGoogle">
+              <img src="/icons/google.svg" alt="Google" width="18" height="18" />
               Sign In with Google
             </button>
 
@@ -102,7 +147,7 @@ function Sign() {
 
           <div className="sign__text__descriptions">
             <h2>Get Started Now.</h2>
-            <p>Enter your credentials to access your acconut</p>
+            <p>Enter your credentials to access your account</p>
           </div>
 
           <div className="dots">
@@ -111,9 +156,10 @@ function Sign() {
             <span></span>
           </div>
         </div>
+
       </div>
     </div>
-  )
+  );
 }
 
-export default Sign
+export default Sign;
