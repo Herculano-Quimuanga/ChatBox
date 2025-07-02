@@ -25,7 +25,6 @@ function Login() {
       const res = await axios.post("http://localhost:3000/api/usuarios/login", form);
       console.log("Login realizado:", res.data.user);
       localStorage.setItem("usuario", JSON.stringify(res.data.user));
-      alert("Login com sucesso!");
       goTo('/home'); // redireciona após login
     } catch (err) {
       console.error("Erro no login:", err.response?.data || err.message);
@@ -64,16 +63,16 @@ function Login() {
   });
 
   return (
-    <div className='login'>
-      <div className="login__container">
+    <div className='account'>
+      <div className="account__container">
 
-        <div className="login__text">
+        <div className="account__text">
           <div className="logo" onClick={() => goTo('/home')}>
             <img src="icons/message.svg" alt="ChatBox Logo" />
             <span>ChatBox</span>
           </div>
 
-          <div className="login__text__descriptions">
+          <div className="account__text__descriptions">
             <h2>Hello, Welcome Back.</h2>
             <p>Hey, welcome back to your special place</p>
           </div>
@@ -85,7 +84,7 @@ function Login() {
           </div>
         </div>
 
-        <form className='Form__container' onSubmit={handleSubmit}>
+        <form className="Form__container" onSubmit={handleSubmit}>
           <div className="form__content">
             <h3>Log in</h3>
 

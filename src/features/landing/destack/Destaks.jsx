@@ -1,9 +1,11 @@
 import React from "react"
 import './destack.css'
 import useNavigation from "../../../hooks/useNavigation";
+import { useAuth } from "../../../context/AuthContext";
 
 function Destaks() {
-      const { goTo } = useNavigation();
+    const { goTo } = useNavigation();
+    const { Authenticated } = useAuth();
     return (
         <>
             <div className="destack">
@@ -37,16 +39,21 @@ function Destaks() {
                         </div>
                     </div>
 
-                     <div className="destack__content" id="destack">
-                         <div className="destack__image" data-aos="fade-right" data-aos-duration="1000">
+                    <div className="destack__content" id="destack">
+                        <div className="destack__image" data-aos="fade-right" data-aos-duration="1000">
                             <img src="/images/left-destack.png" alt="" />
                         </div>
                         <div className="destack__text">
                             <h2 className="section__title min">Send messages in <span>Real Time</span>, without any delay between us</h2>
                             <p className="section__description">
-                               Experience seamless conversations where every message arrives instantly, keeping you connected as if you were in the same room
+                                Experience seamless conversations where every message arrives instantly, keeping you connected as if you were in the same room
                             </p>
-                            <button className="btn_3" data-aos="fade-up" onClick={() => goTo('/sign')}>Lean More</button>
+                            {(!Authenticated) && (
+                                <div><button className="btn_3" data-aos="fade-up" onClick={() => goTo('/sign')}>Lean More</button></div>
+                            )}
+                            {(Authenticated) && (
+                                <div><button className="btn_3" data-aos="fade-up">Chat Now</button></div>
+                            )}
                         </div>
                     </div>
                 </div>

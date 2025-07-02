@@ -15,7 +15,7 @@ import 'aos/dist/aos.css';
 
 function App() {
 
-useEffect(() => {
+  useEffect(() => {
     AOS.init({
       duration: 1000,
     });
@@ -40,7 +40,7 @@ useEffect(() => {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/sign" element={<Sign />} />
-        <Route path='/home' element={<App/>} />
+        <Route path='/home' element={<App />} />
       </Routes>
     </>
   );

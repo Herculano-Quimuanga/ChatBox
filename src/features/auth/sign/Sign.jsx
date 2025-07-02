@@ -24,7 +24,6 @@ function Sign() {
       const res = await axios.post("http://localhost:3000/api/usuarios/register", form);
       console.log("Usuário cadastrado:", res.data.user);
       localStorage.setItem("usuario", JSON.stringify(res.data.user));
-      alert("Cadastro feito com sucesso!");
       goTo('/home');
     } catch (err) {
       console.error("Erro no cadastro:", err.response?.data || err.message);
@@ -63,8 +62,8 @@ function Sign() {
   });
 
   return (
-    <div className='sign'>
-      <div className="sign__container">
+    <div className='account'>
+      <div className="account__container">
 
         <form className='Form__container' onSubmit={handleSubmit}>
           <div className="form__content">
@@ -139,13 +138,13 @@ function Sign() {
           </div>
         </form>
 
-        <div className="sign__text">
+        <div className="account__text">
           <div className="logo" onClick={() => goTo('/home')}>
             <img src="icons/message.svg" alt="ChatBox Logo" />
             <span>ChatBox</span>
           </div>
 
-          <div className="sign__text__descriptions">
+          <div className="account__text__descriptions">
             <h2>Get Started Now.</h2>
             <p>Enter your credentials to access your account</p>
           </div>

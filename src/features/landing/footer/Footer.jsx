@@ -1,9 +1,11 @@
 import React from "react"
 import './footer.css'
 import useNavigation from "../../../hooks/useNavigation";
+import { useAuth } from "../../../context/AuthContext";
 
 function Footer() {
   const { goTo } = useNavigation();
+  const { Authenticated } = useAuth();
   return (
     <>
       <div className="footer">
@@ -12,16 +14,25 @@ function Footer() {
           <div className="footer__top">
             <h1 data-aos="fade-down" data-aos-duration="1000">Want to stay Connected?</h1>
 
-            <div className="footer__btns" data-aos="fade-down" data-aos-duration="1000">
-              <button className="btn_3" onClick={() => goTo('/login')}>
-                <img src="/icons/user.svg" alt="" />
-                Log In
-              </button>
-              <button className="btn_2" onClick={() => goTo('/sign')}>
-                <img src="/icons/user-plus.svg" alt="" />
-                Sign In
-              </button>
-            </div>
+            {(!Authenticated) && (
+              <div className="footer__btns" data-aos="fade-down" data-aos-duration="1000">
+                <button className="btn_3" onClick={() => goTo('/login')}>
+                  <img src="/icons/user.svg" alt="" />
+                  Log In
+                </button>
+                <button className="btn_2" onClick={() => goTo('/sign')}>
+                  <img src="/icons/user-plus.svg" alt="" />
+                  Sign In
+                </button>
+              </div>
+            )}
+            {(Authenticated) && (
+              <div className="footer__btns" data-aos="fade-down" data-aos-duration="1000">
+                <button className="btn_3">
+                  Chat Now
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="footer__content">
