@@ -25,6 +25,7 @@ function Sign() {
       console.log("Usuário cadastrado:", res.data.user);
       localStorage.setItem("usuario", JSON.stringify(res.data.user));
       goTo('/home');
+      window.location.reload();
     } catch (err) {
       console.error("Erro no cadastro:", err.response?.data || err.message);
       alert("Erro no cadastro: " + (err.response?.data?.error || err.message));

@@ -26,6 +26,7 @@ function Login() {
       console.log("Login realizado:", res.data.user);
       localStorage.setItem("usuario", JSON.stringify(res.data.user));
       goTo('/home'); // redireciona após login
+      window.location.reload();
     } catch (err) {
       console.error("Erro no login:", err.response?.data || err.message);
       alert("Erro no login: " + (err.response?.data?.error || err.message));

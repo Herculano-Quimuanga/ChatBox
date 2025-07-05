@@ -29,7 +29,7 @@ function Hero() {
               <div className="hero__actions" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">
                 <p>Click the button to start a conversation now.</p>
 
-                <button className="btn">
+                <button className="btn" onClick={() => goTo('/chat')}>
                   Chat now
                 </button>
               </div>

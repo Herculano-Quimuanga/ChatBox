@@ -52,7 +52,7 @@ function Destaks() {
                                 <div><button className="btn_3" data-aos="fade-up" onClick={() => goTo('/sign')}>Lean More</button></div>
                             )}
                             {(Authenticated) && (
-                                <div><button className="btn_3" data-aos="fade-up">Chat Now</button></div>
+                                <div><button className="btn_3" data-aos="fade-up" onClick={() => goTo('/chat')}>Chat Now</button></div>
                             )}
                         </div>
                     </div>

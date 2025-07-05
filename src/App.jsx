@@ -9,6 +9,7 @@ import Final from './features/landing/final/Final';
 import Footer from './features/landing/footer/Footer';
 import Login from './features/auth/login/Login';
 import Sign from './features/auth/sign/Sign';
+import Chat from './features/chat/chat';
 import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -41,6 +42,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/sign" element={<Sign />} />
         <Route path='/home' element={<App />} />
+        <Route path="/chat" element={<Chat />} />
       </Routes>
     </>
   );

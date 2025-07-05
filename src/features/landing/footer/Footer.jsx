@@ -28,7 +28,7 @@ function Footer() {
             )}
             {(Authenticated) && (
               <div className="footer__btns" data-aos="fade-down" data-aos-duration="1000">
-                <button className="btn_3">
+                <button className="btn_3" onClick={() => goTo('/chat')}>
                   Chat Now
                 </button>
               </div>
