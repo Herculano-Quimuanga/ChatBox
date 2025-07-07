@@ -19,7 +19,7 @@ function Chat() {
 
     const fetchHistorico = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/chat/${Authenticated.id}`);
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/chat/${Authenticated.id}`);
         setConversa(res.data);
       } catch (err) {
         console.error('Erro ao carregar histórico:', err);
@@ -43,7 +43,7 @@ function Chat() {
     setConversa((prev) => [...prev, novaEntrada]);
 
     try {
-      const res = await axios.post('http://localhost:3000/api/chat', {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/chat`, {
         user_id: Authenticated.id,
         mensagem,
       });

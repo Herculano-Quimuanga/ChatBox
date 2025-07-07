@@ -22,7 +22,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:3000/api/usuarios/login", form);
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/usuarios/google`, form);
       console.log("Login realizado:", res.data.user);
       localStorage.setItem("usuario", JSON.stringify(res.data.user));
       goTo('/home'); // redireciona após login
@@ -44,7 +44,7 @@ function Login() {
 
         const { name, email, picture } = googleRes.data;
 
-        const res = await axios.post("http://localhost:3000/api/usuarios/google", {
+        const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/usuarios/google`, {
           nome: name,
           email,
           photo: picture,
@@ -55,7 +55,6 @@ function Login() {
         goTo('/home');
       } catch (err) {
         console.error("Erro durante login com Google:", err);
-        alert("Erro no login com Google");
       }
     },
     onError: () => {
