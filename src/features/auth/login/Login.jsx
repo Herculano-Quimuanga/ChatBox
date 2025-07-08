@@ -24,6 +24,7 @@ function Login() {
     e.preventDefault();
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/usuarios/google`, form);
+
       console.log("Login realizado:", res.data.user);
       localStorage.setItem("usuario", JSON.stringify(res.data.user));
       goTo('/home'); // redireciona após login
