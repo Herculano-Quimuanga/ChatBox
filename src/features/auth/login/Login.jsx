@@ -7,7 +7,8 @@ import axios from 'axios';
 
 function Login() {
   const { goTo } = useNavigation();
-
+  const url = `${import.meta.env.VITE_API_URL}/api/usuarios/google`;
+  console.log("📡 Requisição para:", url);
   const [form, setForm] = useState({ email: "", senha: "" });
   const [showPassword, setShowPassword] = useState(false);
 
