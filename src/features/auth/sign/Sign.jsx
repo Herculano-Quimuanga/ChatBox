@@ -48,6 +48,7 @@ function Sign() {
 
         localStorage.setItem("usuario", JSON.stringify(res.data.user));
         goTo('/');
+        window.location.reload();
       } catch (err) {
         console.error("Erro durante login com Google:", err);
       }

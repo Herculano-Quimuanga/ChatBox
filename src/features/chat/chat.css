@@ -4,7 +4,7 @@
   padding: 2rem;
   background: #f9f9f9;
   border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   height: 90vh;
   display: flex;
   flex-direction: column;
@@ -74,4 +74,13 @@
   border: none;
   border-radius: 6px;
   cursor: pointer;
+}
+
+.chat__erro {
+  color: #ff4444;
+  background: #ffe5e5;
+  padding: 6px 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 14px;
 }
