@@ -1,4 +1,3 @@
-import './sign.css';
 import React, { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -22,13 +21,11 @@ function Sign() {
     e.preventDefault();
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/usuarios/google`, form);
-      console.log("Usuário cadastrado:", res.data.user);
       localStorage.setItem("usuario", JSON.stringify(res.data.user));
-      goTo('/home');
+      goTo('/');
       window.location.reload();
     } catch (err) {
       console.error("Erro no cadastro:", err.response?.data || err.message);
-      alert("Erro no cadastro: " + (err.response?.data?.error || err.message));
     }
   };
 
@@ -49,9 +46,8 @@ function Sign() {
           photo: picture,
         });
 
-        console.log("Usuário Criado e Autenticado:", res.data.user);
         localStorage.setItem("usuario", JSON.stringify(res.data.user));
-        goTo('/home');
+        goTo('/');
       } catch (err) {
         console.error("Erro durante login com Google:", err);
       }
@@ -139,7 +135,7 @@ function Sign() {
         </form>
 
         <div className="account__text">
-          <div className="logo" onClick={() => goTo('/home')}>
+          <div className="logo" onClick={() => goTo('/')}>
             <img src="icons/message.svg" alt="ChatBox Logo" />
             <span>ChatBox</span>
           </div>

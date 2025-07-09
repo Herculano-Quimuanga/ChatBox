@@ -22,7 +22,7 @@ function Footer() {
                 </button>
                 <button className="btn_2" onClick={() => goTo('/sign')}>
                   <img src="/icons/user-plus.svg" alt="" />
-                  Sign In
+                  Sign Up
                 </button>
               </div>
             )}
@@ -37,7 +37,7 @@ function Footer() {
 
           <div className="footer__content">
             <div className="footer__description" data-aos="fade-up" data-aos-duration="1000">
-              <div className="logo" onClick={() => goTo('/home')}>
+              <div className="logo" onClick={() => goTo('/')}>
                 <img src="icons/message.svg" alt="ChatBox Logo" />
                 <span>ChatBox</span>
               </div>
@@ -54,8 +54,8 @@ function Footer() {
 
               <ul data-aos="fade-up" data-aos-duration="1000">
                 <h3>Features</h3>
-                <li><a href="#">Log in</a></li>
-                <li><a href="#">Sign in</a></li>
+                <li><a href="" onClick={() => goTo('/login')}>Log in</a></li>
+                <li><a href="" onClick={() => goTo('/sign')}>Sign Up</a></li>
               </ul>
 
               <ul data-aos="fade-up" data-aos-duration="1000">

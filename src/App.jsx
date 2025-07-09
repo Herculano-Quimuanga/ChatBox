@@ -41,7 +41,7 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/sign" element={<Sign />} />
-        <Route path='/home' element={<App />} />
+        <Route path='/' element={<App />} />
         <Route path="/chat" element={<Chat />} />
       </Routes>
     </>

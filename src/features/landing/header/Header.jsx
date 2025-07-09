@@ -56,7 +56,7 @@ function Header() {
   return (
     <div className={scrolled ? 'header scrolled' : 'header'}>
       <header className="header__container Section__container">
-        <div className="logo" onClick={() => goTo('/home')}>
+        <div className="logo" onClick={() => goTo('/')}>
           <img src="icons/message.svg" alt="ChatBox Logo" />
           <span>ChatBox</span>
         </div>

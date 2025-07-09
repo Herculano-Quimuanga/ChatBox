@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './login.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useGoogleLogin } from '@react-oauth/google';
 import useNavigation from '../../../hooks/useNavigation';
@@ -7,8 +6,6 @@ import axios from 'axios';
 
 function Login() {
   const { goTo } = useNavigation();
-  const url = `${import.meta.env.VITE_API_URL}/api/usuarios/google`;
-  console.log("📡 Requisição para:", url);
   const [form, setForm] = useState({ email: "", senha: "" });
   const [showPassword, setShowPassword] = useState(false);
 
@@ -25,13 +22,11 @@ function Login() {
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/usuarios/google`, form);
 
-      console.log("Login realizado:", res.data.user);
       localStorage.setItem("usuario", JSON.stringify(res.data.user));
-      goTo('/home'); // redireciona após login
+      goTo('/'); // redireciona após login
       window.location.reload();
     } catch (err) {
       console.error("Erro no login:", err.response?.data || err.message);
-      alert("Erro no login: " + (err.response?.data?.error || err.message));
     }
   };
 
@@ -54,7 +49,7 @@ function Login() {
 
         console.log("Usuário autenticado:", res.data.user);
         localStorage.setItem("usuario", JSON.stringify(res.data.user));
-        goTo('/home');
+        goTo('/');
       } catch (err) {
         console.error("Erro durante login com Google:", err);
       }
@@ -69,7 +64,7 @@ function Login() {
       <div className="account__container">
 
         <div className="account__text">
-          <div className="logo" onClick={() => goTo('/home')}>
+          <div className="logo" onClick={() => goTo('/')}>
             <img src="icons/message.svg" alt="ChatBox Logo" />
             <span>ChatBox</span>
           </div>
