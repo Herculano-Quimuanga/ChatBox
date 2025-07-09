@@ -20,7 +20,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/usuarios/google`, form);
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/usuarios/login`, form);
 
       localStorage.setItem("usuario", JSON.stringify(res.data.user));
       goTo('/'); // redireciona após login
