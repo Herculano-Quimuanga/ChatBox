@@ -81,7 +81,7 @@
     transition: box-shadow .4s ease-in-out;
 }
 
-.dropdown__menu:hover{
+.dropdown__menu:hover {
     box-shadow: 0px 3px 12px var(--color-white);
 }
 
@@ -97,7 +97,7 @@
     color: var(--color-primary);
 }
 
-.Logo__Letter{
+.Logo__Letter {
     background-color: var(--color-white);
     padding: .25rem .85rem;
     border-radius: 50%;

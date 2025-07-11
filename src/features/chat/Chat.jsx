@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 function Chat() {
   const { Authenticated } = useAuth();
   const navigate = useNavigate();
+
   const [mensagem, setMensagem] = useState('');
   const [conversa, setConversa] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -24,8 +25,8 @@ function Chat() {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/${Authenticated.id}`);
         setConversa(res.data);
       } catch (err) {
-        setErro('Erro ao carregar o histórico.');
         console.error(err);
+        setErro('Erro ao carregar o histórico.');
       }
     };
 
@@ -33,30 +34,31 @@ function Chat() {
   }, [Authenticated, navigate]);
 
   useEffect(() => {
-    if (mensagensRef.current) {
-      mensagensRef.current.scrollTop = mensagensRef.current.scrollHeight;
-    }
+    mensagensRef.current?.scrollTo({ top: mensagensRef.current.scrollHeight, behavior: 'smooth' });
   }, [conversa, loading]);
+
+  const getUserInitial = () => {
+    return Authenticated?.nome ? Authenticated.nome.charAt(0).toUpperCase() : 'U';
+  };
 
   const enviarMensagem = async (e) => {
     e.preventDefault();
-    if (!mensagem.trim() || !Authenticated) return;
+    if (!mensagem.trim() || loading) return;
 
     const novaEntrada = { sender: 'user', text: mensagem };
-    setConversa((prev) => [...prev, novaEntrada]);
+    const placeholder = { sender: 'ia', text: 'IA está digitando' };
+    setConversa((prev) => [...prev, novaEntrada, placeholder]);
     setMensagem('');
     setErro(null);
     setLoading(true);
 
-    // Exibe "esperando..." temporariamente
-    setConversa((prev) => [...prev, { sender: 'ia', text: 'Esperando' }]);
     let pontos = 1;
     const intervalo = setInterval(() => {
       setConversa((prev) => {
-        const novaConversa = [...prev];
-        novaConversa[novaConversa.length - 1].text = 'Esperando' + '.'.repeat(pontos);
+        const nova = [...prev];
+        nova[nova.length - 1].text = 'IA está digitando' + '.'.repeat(pontos);
         pontos = pontos < 3 ? pontos + 1 : 1;
-        return novaConversa;
+        return nova;
       });
     }, 500);
 
@@ -67,18 +69,15 @@ function Chat() {
       });
 
       clearInterval(intervalo);
-      const novaConversa = [...conversa];
-      novaConversa.pop(); // remove "esperando..."
-      setConversa([
-        ...novaConversa,
-        novaEntrada,
-        { sender: 'ia', text: res.data.resposta }
-      ]);
+      setConversa((prev) => {
+        const semPlaceholder = prev.slice(0, -1); // remove "IA está digitando..."
+        return [...semPlaceholder, { sender: 'ia', text: res.data.resposta }];
+      });
     } catch (err) {
       clearInterval(intervalo);
-      console.error('Erro ao enviar mensagem:', err);
-      setErro('Ocorreu um erro ao obter resposta da IA.');
-      setConversa((prev) => [...prev.slice(0, -1), { sender: 'ia', text: '[Erro ao obter resposta da IA]' }]);
+      console.error(err);
+      setErro('Erro ao obter resposta da IA.');
+      setConversa((prev) => [...prev.slice(0, -1), { sender: 'ia', text: '[Erro ao responder]' }]);
     } finally {
       setLoading(false);
     }
@@ -93,15 +92,15 @@ function Chat() {
       <div className="chat__mensagens" ref={mensagensRef}>
         {conversa.map((msg, index) => (
           <div key={index} className={`chat__mensagem ${msg.sender}`}>
-            <img
-              src={
-                msg.sender === 'user'
-                  ? Authenticated.photo || '/icons/user.svg'
-                  : '/icons/robot.svg'
-              }
-              alt="Avatar"
-              className="chat__avatar"
-            />
+            {msg.sender === 'user' ? (
+              Authenticated.photo ? (
+                <img src={Authenticated.photo} alt="Avatar" className="chat__avatar" />
+              ) : (
+                <span className="Logo__Letter">{getUserInitial()}</span>
+              )
+            ) : (
+              <img src="/images/favicon.png" alt="IA" className="chat__avatar" />
+            )}
             <span>{msg.text}</span>
           </div>
         ))}
@@ -116,7 +115,7 @@ function Chat() {
           onChange={(e) => setMensagem(e.target.value)}
           disabled={loading}
         />
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading || !mensagem.trim()}>
           {loading ? 'Enviando...' : 'Enviar'}
         </button>
       </form>
