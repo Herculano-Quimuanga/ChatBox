@@ -70,7 +70,7 @@ function Chat() {
 
       clearInterval(intervalo);
       setConversa((prev) => {
-        const semPlaceholder = prev.slice(0, -1); // remove "IA está digitando..."
+        const semPlaceholder = prev.slice(0, -1);
         return [...semPlaceholder, { sender: 'ia', text: res.data.resposta }];
       });
     } catch (err) {
@@ -86,8 +86,7 @@ function Chat() {
   if (!Authenticated) return null;
 
   return (
-    <div className="chat__container">
-      <h2>Chat com IA</h2>
+    <div className="chat__container Section__container">
 
       <div className="chat__mensagens" ref={mensagensRef}>
         {conversa.map((msg, index) => (
@@ -116,7 +115,7 @@ function Chat() {
           disabled={loading}
         />
         <button type="submit" disabled={loading || !mensagem.trim()}>
-          {loading ? 'Enviando...' : 'Enviar'}
+          {loading ? 'Enviando...' : <img src="/icons/send.svg" alt="Enviar" className="send__icon" />}
         </button>
       </form>
     </div>

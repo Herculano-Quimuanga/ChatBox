@@ -1,18 +1,8 @@
 .chat__container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 2rem;
   background: #f9f9f9;
-  border-radius: 12px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-  height: 90vh;
   display: flex;
   flex-direction: column;
-}
-
-.chat__container h2 {
-  text-align: center;
-  margin-bottom: 1rem;
 }
 
 .chat__mensagens {
@@ -35,7 +25,7 @@
 }
 
 .chat__mensagem.user {
-  background-color: #daf1ff;
+  background-color: #e2edf4;
   align-self: flex-end;
   text-align: right;
   flex-direction: row-reverse;
@@ -48,8 +38,8 @@
 }
 
 .chat__avatar {
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
 }
 
@@ -61,19 +51,32 @@
 
 .chat__form input {
   flex: 1;
-  padding: 10px;
+  padding: 14px 12px;
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 1rem;
+  font-weight: 500;
+  text-wrap: wrap;
 }
 
 .chat__form button {
-  padding: 10px 16px;
-  background-color: #1f8eff;
+  width: 50px;
+  height: 50px;
+  background-color: #014cfd;
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: 50%;
   cursor: pointer;
+  font-size: 1.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.send__icon{
+  width: 20px;
+  height: 20px;
+  transform: rotateX(180deg);;
 }
 
 .chat__erro {

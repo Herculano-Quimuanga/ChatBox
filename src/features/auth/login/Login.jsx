@@ -125,7 +125,7 @@ function Login() {
               </div>
             </div>
 
-            <button className="btn_3" type='submit'>Log in</button>
+            <button className="btn_3" type="submit">Log in</button>
 
             <p>Don't have an account? <button type="button" className='GotoSignUp' onClick={() => goTo('/sign')}>Sign Up</button></p>
 
