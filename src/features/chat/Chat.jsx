@@ -57,7 +57,7 @@ function Chat() {
     const intervalo = setInterval(() => {
       setConversa((prev) => {
         const nova = [...prev];
-        nova[nova.length - 1].text = 'IA está digitando' + '.'.repeat(pontos);
+        nova[nova.length - 1].text = 'Processando resposta' + '.'.repeat(pontos);
         pontos = pontos < 3 ? pontos + 1 : 1;
         return nova;
       });
@@ -78,7 +78,7 @@ function Chat() {
       clearInterval(intervalo);
       console.error(err);
       setErro('Erro ao obter resposta da IA.');
-      setConversa((prev) => [...prev.slice(0, -1), { sender: 'ia', text: '[Erro ao responder]' }]);
+      setConversa((prev) => [...prev.slice(0, -1), { sender: 'ia', text: 'Não foi possível processar a resposta. Tente mais tarde!' }]);
     } finally {
       setLoading(false);
     }
@@ -128,7 +128,7 @@ function Chat() {
             disabled={loading}
           />
           <button type="submit" disabled={loading || !mensagem.trim()}>
-            {loading ? <span class="loader"></span> : <img src="/icons/send.svg" alt="Enviar" className="send__icon" />}
+            {loading ? <span className="loader"></span> : <img src="/icons/send.svg" alt="Enviar" className="send__icon" />}
           </button>
         </form>
 

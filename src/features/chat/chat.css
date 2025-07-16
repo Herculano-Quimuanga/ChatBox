@@ -1,15 +1,16 @@
 .chat__container {
   background: #f9f9f9;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 90vh;
+  height: 100vh;
 }
 
 .chat__content {
   width: 100%;
-  max-width: 800px;
+  height: 100%;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -19,11 +20,17 @@
 
 .Chat__Header {
   background-color: var(--color-primary);
-  width: 35%;
-  padding: .75rem 2rem;
+  width: 100%;
+  padding: .5rem 1.5rem;
   display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 1.5rem;
-  border-radius: 28px;
+  border-radius: 35px;
+}
+
+.Chat__Header .logo{
+  transform: translateY(5px);
 }
 
 .chat__mensagens {
@@ -33,6 +40,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  width: 100%;
 }
 
 .chat__mensagem {
@@ -40,22 +48,23 @@
   align-items: flex-start;
   gap: 10px;
   padding: 10px 14px;
-  border-radius: 8px;
+  border-radius: 24px;
   max-width: 80%;
   word-wrap: break-word;
 }
 
 .chat__mensagem.user {
-  background-color: #e2edf4;
+  background-color: #d5dadd;
   align-self: flex-end;
   text-align: right;
   flex-direction: row-reverse;
 }
 
 .chat__mensagem.ia {
-  background-color: #e8e8e8;
+  background-color: #f2f4f4;
   align-self: flex-start;
   text-align: left;
+  width: 100%;
 }
 
 .chat__avatar {
@@ -66,18 +75,23 @@
 
 .chat__form {
   display: flex;
+  align-items: center;
   gap: 10px;
   margin-top: 1rem;
+  width: 100%;
 }
 
 .chat__form input {
   flex: 1;
-  padding: 14px 12px;
-  border-radius: 6px;
+  padding: 22px 16px;
+  border-radius: 24px;
   border: 1px solid #ccc;
-  font-size: 1rem;
+  font-size: 1.075rem;
   font-weight: 500;
   text-wrap: wrap;
+  outline: none;
+  color: var(--color-text);
+  font-weight: 500;
 }
 
 .chat__form button {
@@ -95,9 +109,8 @@
 }
 
 .send__icon {
-  width: 20px;
-  height: 20px;
-  transform: rotateX(90deg);
+  width: 24px;
+  height: 24px;
 }
 
 .chat__erro {
