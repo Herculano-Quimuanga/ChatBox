@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+
 function Chat() {
   const { Authenticated } = useAuth();
   const navigate = useNavigate();
@@ -87,6 +88,13 @@ function Chat() {
 
   return (
     <div className="chat__container Section__container">
+
+      <div className="Chat__Header">
+        <div className="logo" onClick={() => navigate('/')}>
+          <img src="icons/message.svg" alt="ChatBox Logo" />
+          <span>ChatBox</span>
+        </div>
+      </div>
 
       <div className="chat__mensagens" ref={mensagensRef}>
         {conversa.map((msg, index) => {
