@@ -3,6 +3,7 @@
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  height: 100vh;
 }
 
 .chat__mensagens {
@@ -76,7 +77,7 @@
 .send__icon{
   width: 20px;
   height: 20px;
-  transform: rotateX(180deg);;
+  transform: rotateX(90deg);
 }
 
 .chat__erro {

@@ -89,20 +89,24 @@ function Chat() {
     <div className="chat__container Section__container">
 
       <div className="chat__mensagens" ref={mensagensRef}>
-        {conversa.map((msg, index) => (
-          <div key={index} className={`chat__mensagem ${msg.sender}`}>
-            {msg.sender === 'user' ? (
-              Authenticated.photo ? (
-                <img src={Authenticated.photo} alt="Avatar" className="chat__avatar" />
-              ) : (
-                <span className="Logo__Letter">{getUserInitial()}</span>
-              )
-            ) : (
-              <img src="/images/favicon.png" alt="IA" className="chat__avatar" />
-            )}
-            <span>{msg.text}</span>
-          </div>
-        ))}
+        {conversa.map((msg, index) => {
+          let userAvatar;
+          if (msg.sender === 'user') {
+            if (Authenticated.photo) {
+              userAvatar = <img src={Authenticated.photo} alt="Avatar" className="chat__avatar" />;
+            } else {
+              userAvatar = <span className="Logo__Letter">{getUserInitial()}</span>;
+            }
+          } else {
+            userAvatar = <img src="/images/favicon.png" alt="IA" className="chat__avatar" />;
+          }
+          return (
+            <div key={index} className={`chat__mensagem ${msg.sender}`}>
+              {userAvatar}
+              <span>{msg.text}</span>
+            </div>
+          );
+        })}
         {erro && <div className="chat__erro">⚠️ {erro}</div>}
       </div>
 
