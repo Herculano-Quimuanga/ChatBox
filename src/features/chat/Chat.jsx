@@ -89,47 +89,50 @@ function Chat() {
   return (
     <div className="chat__container Section__container">
 
-      <div className="Chat__Header">
-        <div className="logo" onClick={() => navigate('/')}>
-          <img src="icons/message.svg" alt="ChatBox Logo" />
-          <span>ChatBox</span>
+      <div className="chat__content">
+        <div className="Chat__Header">
+          <div className="logo" onClick={() => navigate('/')}>
+            <img src="icons/message.svg" alt="ChatBox Logo" />
+            <span>ChatBox</span>
+          </div>
         </div>
-      </div>
 
-      <div className="chat__mensagens" ref={mensagensRef}>
-        {conversa.map((msg, index) => {
-          let userAvatar;
-          if (msg.sender === 'user') {
-            if (Authenticated.photo) {
-              userAvatar = <img src={Authenticated.photo} alt="Avatar" className="chat__avatar" />;
+        <div className="chat__mensagens" ref={mensagensRef}>
+          {conversa.map((msg, index) => {
+            let userAvatar;
+            if (msg.sender === 'user') {
+              if (Authenticated.photo) {
+                userAvatar = <img src={Authenticated.photo} alt="Avatar" className="chat__avatar" />;
+              } else {
+                userAvatar = <span className="Logo__Letter">{getUserInitial()}</span>;
+              }
             } else {
-              userAvatar = <span className="Logo__Letter">{getUserInitial()}</span>;
+              userAvatar = <img src="/images/favicon.png" alt="IA" className="chat__avatar" />;
             }
-          } else {
-            userAvatar = <img src="/images/favicon.png" alt="IA" className="chat__avatar" />;
-          }
-          return (
-            <div key={index} className={`chat__mensagem ${msg.sender}`}>
-              {userAvatar}
-              <span>{msg.text}</span>
-            </div>
-          );
-        })}
-        {erro && <div className="chat__erro">⚠️ {erro}</div>}
-      </div>
+            return (
+              <div key={index} className={`chat__mensagem ${msg.sender}`}>
+                {userAvatar}
+                <span>{msg.text}</span>
+              </div>
+            );
+          })}
+          {erro && <div className="chat__erro">⚠️ {erro}</div>}
+        </div>
 
-      <form onSubmit={enviarMensagem} className="chat__form">
-        <input
-          type="text"
-          placeholder="Digite sua mensagem..."
-          value={mensagem}
-          onChange={(e) => setMensagem(e.target.value)}
-          disabled={loading}
-        />
-        <button type="submit" disabled={loading || !mensagem.trim()}>
-          {loading ? 'Enviando...' : <img src="/icons/send.svg" alt="Enviar" className="send__icon" />}
-        </button>
-      </form>
+        <form onSubmit={enviarMensagem} className="chat__form">
+          <input
+            type="text"
+            placeholder="Digite sua mensagem..."
+            value={mensagem}
+            onChange={(e) => setMensagem(e.target.value)}
+            disabled={loading}
+          />
+          <button type="submit" disabled={loading || !mensagem.trim()}>
+            {loading ? <span class="loader"></span> : <img src="/icons/send.svg" alt="Enviar" className="send__icon" />}
+          </button>
+        </form>
+
+      </div>
     </div>
   );
 }

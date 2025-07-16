@@ -2,18 +2,28 @@
   background: #f9f9f9;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.Chat__Header{
-  background-color: var(--color-primary);
-  width: 100%;
-  padding: .65rem 2rem;
-  display: flex;
   align-items: center;
   justify-content: center;
+  height: 90vh;
+}
+
+.chat__content {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.Chat__Header {
+  background-color: var(--color-primary);
+  width: 35%;
+  padding: .75rem 2rem;
+  display: flex;
   margin-bottom: 1.5rem;
+  border-radius: 28px;
 }
 
 .chat__mensagens {
@@ -84,7 +94,7 @@
   justify-content: center;
 }
 
-.send__icon{
+.send__icon {
   width: 20px;
   height: 20px;
   transform: rotateX(90deg);
@@ -107,4 +117,25 @@
   font-size: 1.5rem;
   font-weight: 500;
   pointer-events: none;
+}
+
+.loader {
+  width: 28px;
+  height: 28px;
+  border: 3.75px solid #FFF;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
