@@ -4,7 +4,6 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-
 function Chat() {
   const { Authenticated } = useAuth();
   const navigate = useNavigate();
@@ -15,6 +14,7 @@ function Chat() {
   const [erro, setErro] = useState(null);
   const mensagensRef = useRef(null);
 
+  // Carrega histórico
   useEffect(() => {
     if (!Authenticated) {
       navigate('/login');
@@ -23,7 +23,9 @@ function Chat() {
 
     const fetchHistorico = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/chat/${Authenticated.id}`);
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/chat/${Authenticated.id}`
+        );
         setConversa(res.data);
       } catch (err) {
         console.error(err);
@@ -34,20 +36,27 @@ function Chat() {
     fetchHistorico();
   }, [Authenticated, navigate]);
 
+  // Scroll automático
   useEffect(() => {
-    mensagensRef.current?.scrollTo({ top: mensagensRef.current.scrollHeight, behavior: 'smooth' });
-  }, [conversa, loading]);
+    mensagensRef.current?.scrollTo({
+      top: mensagensRef.current.scrollHeight,
+      behavior: 'smooth'
+    });
+  }, [conversa]);
 
   const getUserInitial = () => {
-    return Authenticated?.nome ? Authenticated.nome.charAt(0).toUpperCase() : 'U';
+    return Authenticated?.nome
+      ? Authenticated.nome.charAt(0).toUpperCase()
+      : 'U';
   };
 
   const enviarMensagem = async (e) => {
     e.preventDefault();
     if (!mensagem.trim() || loading) return;
 
+    // Adiciona mensagem do usuário e placeholder IA
     const novaEntrada = { sender: 'user', text: mensagem };
-    const placeholder = { sender: 'ia', text: 'IA está digitando' };
+    const placeholder = { sender: 'ia', text: 'IA está digitando...' };
     setConversa((prev) => [...prev, novaEntrada, placeholder]);
     setMensagem('');
     setErro(null);
@@ -64,10 +73,14 @@ function Chat() {
     }, 500);
 
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/chat`, {
-        user_id: Authenticated.id,
-        mensagem,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/chat`,
+        {
+          user_id: Authenticated.id,
+          mensagem
+        },
+        { withCredentials: false }
+      );
 
       clearInterval(intervalo);
       setConversa((prev) => {
@@ -78,7 +91,10 @@ function Chat() {
       clearInterval(intervalo);
       console.error(err);
       setErro('Erro ao obter resposta da IA.');
-      setConversa((prev) => [...prev.slice(0, -1), { sender: 'ia', text: 'Não foi possível processar a resposta. Tente mais tarde!' }]);
+      setConversa((prev) => [
+        ...prev.slice(0, -1),
+        { sender: 'ia', text: 'Não foi possível processar a resposta. Tente mais tarde!' }
+      ]);
     } finally {
       setLoading(false);
     }
@@ -88,7 +104,6 @@ function Chat() {
 
   return (
     <div className="chat__container Section__container">
-
       <div className="chat__content">
         <div className="Chat__Header">
           <div className="logo" onClick={() => navigate('/')}>
@@ -101,13 +116,15 @@ function Chat() {
           {conversa.map((msg, index) => {
             let userAvatar;
             if (msg.sender === 'user') {
-              if (Authenticated.photo) {
-                userAvatar = <img src={Authenticated.photo} alt="Avatar" className="chat__avatar" />;
-              } else {
-                userAvatar = <span className="Logo__Letter">{getUserInitial()}</span>;
-              }
+              userAvatar = Authenticated.photo ? (
+                <img src={Authenticated.photo} alt="Avatar" className="chat__avatar" />
+              ) : (
+                <span className="Logo__Letter">{getUserInitial()}</span>
+              );
             } else {
-              userAvatar = <img src="/images/favicon.png" alt="IA" className="chat__avatar" />;
+              userAvatar = (
+                <img src="/images/favicon.png" alt="IA" className="chat__avatar" />
+              );
             }
             return (
               <div key={index} className={`chat__mensagem ${msg.sender}`}>
@@ -128,10 +145,13 @@ function Chat() {
             disabled={loading}
           />
           <button type="submit" disabled={loading || !mensagem.trim()}>
-            {loading ? <span className="loader"></span> : <img src="/icons/send.svg" alt="Enviar" className="send__icon" />}
+            {loading ? (
+              <span className="loader"></span>
+            ) : (
+              <img src="/icons/send.svg" alt="Enviar" className="send__icon" />
+            )}
           </button>
         </form>
-
       </div>
     </div>
   );
