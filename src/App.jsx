@@ -10,6 +10,7 @@ import Footer from './features/landing/footer/Footer';
 import Login from './features/auth/login/Login';
 import Sign from './features/auth/sign/Sign';
 import Chat from './features/chat/Chat';
+import ListUsers from './features/landing/listUsers/ListUsers';
 import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -25,23 +26,20 @@ function App() {
   return (
     <>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Header />
-              <Hero />
-              <Banner />
-              <Reasons />
-              <Destaks />
-              <Final />
-              <Footer />
-            </>
-          }
-        />
+        <Route path="/" element={
+          <>
+            <Header />
+            <Hero />
+            <ListUsers />
+            <Banner />
+            <Reasons />
+            <Destaks />
+            <Final />
+            <Footer />
+          </>
+        } />
         <Route path="/login" element={<Login />} />
         <Route path="/sign" element={<Sign />} />
-        <Route path='/' element={<App />} />
         <Route path="/chat" element={<Chat />} />
       </Routes>
     </>
