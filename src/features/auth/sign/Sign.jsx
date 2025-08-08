@@ -21,13 +21,19 @@ function Sign() {
     e.preventDefault();
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/usuarios/register`, form);
-      localStorage.setItem("usuario", JSON.stringify(res.data.user));
+
+      const { user, token } = res.data;
+
+      const userData = { ...user, token };
+      localStorage.setItem("usuario", JSON.stringify(userData));
+
       goTo('/');
       window.location.reload();
     } catch (err) {
       console.error("Erro no cadastro:", err.response?.data || err.message);
     }
   };
+
 
   const loginGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -46,7 +52,11 @@ function Sign() {
           photo: picture,
         });
 
-        localStorage.setItem("usuario", JSON.stringify(res.data.user));
+        const { user, token } = res.data;
+
+        const userData = { ...user, token };
+        localStorage.setItem("usuario", JSON.stringify(userData));
+
         goTo('/');
         window.location.reload();
       } catch (err) {
@@ -57,6 +67,7 @@ function Sign() {
       console.log("Erro no login com Google");
     },
   });
+
 
   return (
     <div className='account'>

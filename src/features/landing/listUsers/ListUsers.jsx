@@ -11,17 +11,28 @@ function ListUsers() {
 
     useEffect(() => {
         const fetchUsuarios = async () => {
+            if (!Authenticated?.token) return;
+
             try {
-                const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/usuarios`);
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/usuarios`, {
+                    headers: {
+                        Authorization: `Bearer ${Authenticated.token}`
+                    }
+                });
+
                 const outrosUsuarios = res.data.filter((user) => user.id !== Authenticated?.id);
                 setUsuarios(outrosUsuarios);
             } catch (err) {
                 console.error('Erro ao buscar usuários:', err);
             }
+            // console.log("Token recebido:", Authenticated.token);
+            // console.log("Usuário logado:", Authenticated.nome);
+
         };
 
-        if (Authenticated) fetchUsuarios();
+        fetchUsuarios();
     }, [Authenticated]);
+
 
     const anterior = () => setInicio(Math.max(0, inicio - porPagina));
     const proximo = () => setInicio(Math.min(usuarios.length - porPagina, inicio + porPagina));

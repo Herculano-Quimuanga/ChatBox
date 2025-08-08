@@ -21,9 +21,10 @@ function Login() {
     e.preventDefault();
     try {
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/usuarios/login`, form);
-
-      localStorage.setItem("usuario", JSON.stringify(res.data.user));
-      goTo('/'); // redireciona após login
+      const { user, token } = res.data;
+      const userData = { ...user, token };
+      localStorage.setItem("usuario", JSON.stringify(userData));
+      goTo('/');
       window.location.reload();
     } catch (err) {
       console.error("Erro no login:", err.response?.data || err.message);
@@ -47,8 +48,12 @@ function Login() {
           photo: picture,
         });
 
-        console.log("Usuário autenticado:", res.data.user);
-        localStorage.setItem("usuario", JSON.stringify(res.data.user));
+        const { user, token } = res.data;
+
+        // Corrigido:
+        const userData = { ...user, token };
+        localStorage.setItem("usuario", JSON.stringify(userData));
+
         goTo('/');
         window.location.reload();
       } catch (err) {

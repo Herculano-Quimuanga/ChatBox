@@ -30,9 +30,9 @@ function App() {
           <>
             <Header />
             <Hero />
-            <ListUsers />
             <Banner />
             <Reasons />
+            <ListUsers />
             <Destaks />
             <Final />
             <Footer />
