@@ -16,20 +16,41 @@ function Chat() {
   const [erro, setErro] = useState(null);
   const mensagensRef = useRef(null);
 
-  // Carrega as conversas existentes
   useEffect(() => {
     if (!Authenticated) return;
 
     const fetchConversas = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/conversas`, {
-          headers: {
-            Authorization: `Bearer ${Authenticated.token}`
-          }
+          headers: { Authorization: `Bearer ${Authenticated.token}` },
         });
-        setConversas(res.data);
+
+        const lista = res.data || [];
+        setConversas(lista);
+
+        if (lista.length === 0) {
+          // Sem conversas -> criar conversa IA automaticamente
+          const createRes = await axios.post(
+            `${import.meta.env.VITE_API_URL}/api/conversas`,
+            { eh_ia: true },
+            { headers: { Authorization: `Bearer ${Authenticated.token}` } }
+          );
+          const novaId = createRes.data.conversaId;
+          // Recarrega lista
+          const res2 = await axios.get(`${import.meta.env.VITE_API_URL}/api/conversas`, {
+            headers: { Authorization: `Bearer ${Authenticated.token}` },
+          });
+          setConversas(res2.data || []);
+          // seleciona a conversa criada
+          const convObj = (res2.data || []).find((c) => c.id === novaId) || { id: novaId, eh_ia: true };
+          carregarConversa(convObj);
+        } else {
+          // Se já houver conversas, seleciona a primeira automaticamente (ajusta se quiser preferir IA)
+          const primeira = lista[0];
+          carregarConversa(primeira);
+        }
       } catch (err) {
-        console.error('Erro ao buscar conversas:', err);
+        console.error('Erro ao buscar/gerar conversas:', err.response?.data || err.message);
       }
     };
 
@@ -44,7 +65,7 @@ function Chat() {
     mensagensRef.current?.scrollTo({ top: mensagensRef.current.scrollHeight, behavior: 'smooth' });
   }, [conversa]);
 
-  //  Carrega as mensagens de uma conversa
+  // Carrega as mensagens de uma conversa
   const carregarConversa = async (conversaObj) => {
     if (!conversaObj) return;
     setErro(null);
@@ -55,26 +76,33 @@ function Chat() {
       const res = await axios.get(
         `${import.meta.env.VITE_API_URL}/api/conversas/${conversaObj.id}/mensagens`,
         {
-          headers: {
-            Authorization: `Bearer ${Authenticated.token}`
-          }
+          headers: { Authorization: `Bearer ${Authenticated.token}` },
         }
       );
-      setConversa(res.data || []);
+
+      // API retorna array de { sender: 'user'|'outro', texto }
+      const msgs = (res.data || []).map((m) => ({
+        sender: m.sender === 'user' ? 'user' : (conversaObj.eh_ia ? 'ia' : 'outro'),
+        text: m.texto || m.text || '',
+        remetente_id: m.remetente_id,
+        enviada_em: m.enviada_em,
+      }));
+
+      setConversa(msgs);
     } catch (err) {
       console.error(err);
       setErro('Erro ao carregar a conversa.');
     }
   };
 
-  //  Envia mensagem para o backend
+  // Envia mensagem para o backend
   const enviarMensagem = async (e) => {
     e.preventDefault();
-    console.log('Tentando enviar:', mensagem);
-    console.log('Conversa selecionada:', conversaSelecionada);
-    console.log('Token:', Authenticated?.token);
-
-    if (!mensagem.trim() || loading || !conversaSelecionada) return;
+    if (!mensagem.trim() || loading) return;
+    if (!conversaSelecionada) {
+      setErro('Selecione uma conversa primeiro.');
+      return;
+    }
 
     const entradaUser = { sender: 'user', text: mensagem };
     const placeholder = { sender: 'ia', text: 'Digitando...' };
@@ -97,11 +125,7 @@ function Chat() {
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/conversas/${conversaSelecionada.id}/mensagens`,
         { texto: mensagem },
-        {
-          headers: {
-            Authorization: `Bearer ${Authenticated?.token}`
-          }
-        }
+        { headers: { Authorization: `Bearer ${Authenticated?.token}` } }
       );
 
       clearInterval(intervalo);
@@ -111,7 +135,6 @@ function Chat() {
         : { sender: 'outro', text: 'Mensagem enviada com sucesso!' };
 
       setConversa((prev) => [...prev.slice(0, -1), novaMensagem]);
-      // eslint-disable-next-line no-unused-vars
     } catch (err) {
       clearInterval(intervalo);
       setErro('Erro ao enviar a mensagem.');
@@ -128,7 +151,11 @@ function Chat() {
     <div className="chat__wrapper">
       <aside className="chat__sidebar">
         {conversas.map((c) => (
-          <div key={c.id} className="user__card" onClick={() => carregarConversa(c)}>
+          <div
+            key={c.id}
+            className={`user__card ${conversaSelecionada?.id === c.id ? 'active' : ''}`}
+            onClick={() => carregarConversa(c)}
+          >
             <img src={c.photo} alt={c.nome} />
             <span>{c.nome}</span>
           </div>
@@ -157,7 +184,11 @@ function Chat() {
                   <img src={Authenticated.photo} alt="eu" className="chat__avatar" />
                 ) : (
                   <img
-                    src={conversaSelecionada?.eh_ia ? '/images/favicon.png' : conversaSelecionada?.photo}
+                    src={
+                      conversaSelecionada?.eh_ia
+                        ? '/images/favicon.png'
+                        : conversaSelecionada?.photo
+                    }
                     alt={msg.sender}
                     className="chat__avatar"
                   />
@@ -177,11 +208,7 @@ function Chat() {
               disabled={loading}
             />
             <button type="submit" disabled={loading || !mensagem.trim()}>
-              {loading ? (
-                <span className="loader" />
-              ) : (
-                <img src="/icons/send.svg" alt="Enviar" className="send__icon" />
-              )}
+              {loading ? <span className="loader" /> : <img src="/icons/send.svg" alt="Enviar" className="send__icon" />}
             </button>
           </form>
         </div>
