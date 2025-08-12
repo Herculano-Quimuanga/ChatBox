@@ -1,5 +1,5 @@
 // src/App.jsx
-import { Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './features/landing/header/Header';
 import Hero from './features/landing/hero/Hero';
 import Banner from './features/landing/banner/Banner';
@@ -40,7 +40,13 @@ function App() {
         } />
         <Route path="/login" element={<Login />} />
         <Route path="/sign" element={<Sign />} />
+
+        {/* Chat: sem param ou com param (mesmo componente) */}
         <Route path="/chat" element={<Chat />} />
+        <Route path="/chat/:userId" element={<Chat />} />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
+
       </Routes>
     </>
   );

@@ -95,6 +95,26 @@
   word-wrap: break-word;
 }
 
+.chat__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+}
+
+.chat__texto {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.chat__check {
+  font-size: 12px;
+  color: #4caf50; /* Verde estilo WhatsApp */
+}
+
+
 .chat__mensagem.user {
   background-color: #d5dadd;
   align-self: flex-end;
@@ -219,6 +239,32 @@
   display: inline-block;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
+}
+
+.mensagem {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.enviada {
+  background-color: #dcf8c6;
+  padding: 8px 12px;
+  border-radius: 10px;
+  align-self: flex-end;
+}
+
+.recebida {
+  background-color: #fff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  align-self: flex-start;
+}
+
+.icone-check {
+  font-size: 12px;
+  color: #4caf50;
+  margin-left: 5px;
 }
 
 @keyframes rotation {
