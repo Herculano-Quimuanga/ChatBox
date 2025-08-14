@@ -25,7 +25,6 @@ function Chat() {
 
   useEffect(() => {
     if (!Authenticated) return;
-    console.log("Autenticado:", Authenticated);
     // redireciona se deslogado
   }, [Authenticated, navigate]);
 
