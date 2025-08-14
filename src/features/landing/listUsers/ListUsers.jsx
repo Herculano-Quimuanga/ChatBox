@@ -15,7 +15,7 @@ function ListUsers() {
             if (!Authenticated?.token) return;
 
             try {
-                const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/usuarios`, {
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}api/usuarios`, {
                     headers: {
                         Authorization: `Bearer ${Authenticated.token}`
                     }

@@ -43,7 +43,7 @@ function Chat() {
     const init = async () => {
       try {
         // 1) carrega todas as conversas do utilizador
-        const res = await axios.get(`${API}/api/conversas`, {
+        const res = await axios.get(`${API}api/conversas`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const lista = res.data || [];
@@ -56,13 +56,13 @@ function Chat() {
           if (isIAParam) {
             // cria/obtém conversa IA
             const createRes = await axios.post(
-              `${API}/api/conversas`,
+              `${API}api/conversas`,
               { eh_ia: true },
               { headers: { Authorization: `Bearer ${token}` } }
             );
             const conversaId = createRes.data.conversaId;
             // recarrega lista para atualizar nome/photo
-            const res2 = await axios.get(`${API}/api/conversas`, {
+            const res2 = await axios.get(`${API}api/conversas`, {
               headers: { Authorization: `Bearer ${token}` },
             });
             setConversas(res2.data || []);
@@ -84,13 +84,13 @@ function Chat() {
             }
             // cria/obtém conversa entre users
             const createRes = await axios.post(
-              `${API}/api/conversas`,
+              `${API}api/conversas`,
               { destinatarioId, eh_ia: false },
               { headers: { Authorization: `Bearer ${token}` } }
             );
             const conversaId = createRes.data.conversaId;
             // atualizar lista e selecionar a conversa criada
-            const res2 = await axios.get(`${API}/api/conversas`, {
+            const res2 = await axios.get(`${API}api/conversas`, {
               headers: { Authorization: `Bearer ${token}` },
             });
             setConversas(res2.data || []);
@@ -109,12 +109,12 @@ function Chat() {
         // 3) sem param: se lista vazia -> cria conversa IA; se não, seleciona a primeira
         if ((lista || []).length === 0) {
           const createRes = await axios.post(
-            `${API}/api/conversas`,
+            `${API}api/conversas`,
             { eh_ia: true },
             { headers: { Authorization: `Bearer ${token}` } }
           );
           const conversaId = createRes.data.conversaId;
-          const res2 = await axios.get(`${API}/api/conversas`, {
+          const res2 = await axios.get(`${API}api/conversas`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           setConversas(res2.data || []);
@@ -151,7 +151,7 @@ function Chat() {
 
     try {
       const res = await axios.get(
-        `${API}/api/conversas/${conversaObj.id}/mensagens`,
+        `${API}api/conversas/${conversaObj.id}/mensagens`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -199,7 +199,7 @@ function Chat() {
 
     try {
       const res = await axios.post(
-        `${API}/api/conversas/${conversaSelecionada.id}/mensagens`,
+        `${API}api/conversas/${conversaSelecionada.id}/mensagens`,
         { texto: mensagem },
         { headers: { Authorization: `Bearer ${token}` } }
       );
