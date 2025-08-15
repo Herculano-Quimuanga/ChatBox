@@ -250,8 +250,8 @@ function Chat() {
           </div>
 
           {!conversaSelecionada && (
-            <p style={{ color: "red", marginTop: "1rem" }}>
-              Selecione uma conversa para começar a enviar mensagens.
+            <p style={{ color: "red", marginTop: "1rem", textAlign: "center", fontSize: ".9rem" }}>
+              Selecione uma conversa para começar.
             </p>
           )}
 
