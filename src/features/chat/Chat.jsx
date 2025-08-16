@@ -10,25 +10,29 @@ function Chat() {
   const navigate = useNavigate();
   const { userId: paramUserId } = useParams();
   const token = Authenticated?.token;
+  const API = import.meta.env.VITE_API_URL;
 
   const [conversas, setConversas] = useState([]);
   const [conversa, setConversa] = useState([]);
-  const [mensagem, setMensagem] = useState("");
   const [conversaSelecionada, setConversaSelecionada] = useState(null);
-  const [loading, setLoading] = useState(false);
+
+  const [mensagem, setMensagem] = useState("");
   const [erro, setErro] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [fullLoading, setFullLoading] = useState(false);
+
+  const [todosUsuarios, setTodosUsuarios] = useState([]);
+  const [showUsuarios, setShowUsuarios] = useState(false);
 
   const mensagensRef = useRef(null);
   const typingIntervalRef = useRef(null);
 
-  const API = import.meta.env.VITE_API_URL;
+  /* ------------------------------------------------------- USEEFFECTS ------------------------------------------------------ */
 
   useEffect(() => {
     if (!Authenticated) return;
-    // redireciona se deslogado
-  }, [Authenticated, navigate]);
+  }, [Authenticated]);
 
-  // Scroll quando conversa mudar
   useEffect(() => {
     mensagensRef.current?.scrollTo({
       top: mensagensRef.current.scrollHeight,
@@ -36,160 +40,158 @@ function Chat() {
     });
   }, [conversa]);
 
-  // Inicialização: carrega conversas e abre conforme param / regra
   useEffect(() => {
     if (!Authenticated) return;
-
-    const init = async () => {
-      try {
-        // 1) carrega todas as conversas do utilizador
-        const res = await axios.get(`${API}api/conversas`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const lista = res.data || [];
-        setConversas(lista);
-
-        // 2) se existe param userId → cria/obtém a conversa com esse user
-        if (paramUserId) {
-          // se o param for 'ia' (string) consideramos conversa IA — caso contrário assumimos número
-          const isIAParam = paramUserId.toLowerCase?.() === "ia";
-          if (isIAParam) {
-            // cria/obtém conversa IA
-            const createRes = await axios.post(
-              `${API}api/conversas`,
-              { eh_ia: true },
-              { headers: { Authorization: `Bearer ${token}` } }
-            );
-            const conversaId = createRes.data.conversaId;
-            // recarrega lista para atualizar nome/photo
-            const res2 = await axios.get(`${API}api/conversas`, {
-              headers: { Authorization: `Bearer ${token}` },
-            });
-            setConversas(res2.data || []);
-            const convObj =
-              (res2.data || []).find((c) => c.id === conversaId) || {
-                id: conversaId,
-                eh_ia: true,
-                nome: "ChatBox AI",
-                photo: "/images/favicon.png",
-              };
-            await carregarConversa(convObj);
-          } else {
-            // param numerico -> conversa entre users
-            const destinatarioId = Number(paramUserId);
-            if (Number.isNaN(destinatarioId)) {
-              console.warn("userId inválido na URL:", paramUserId);
-              navigate("/chat");
-              return;
-            }
-            // cria/obtém conversa entre users
-            const createRes = await axios.post(
-              `${API}api/conversas`,
-              { destinatarioId, eh_ia: false },
-              { headers: { Authorization: `Bearer ${token}` } }
-            );
-            const conversaId = createRes.data.conversaId;
-            // atualizar lista e selecionar a conversa criada
-            const res2 = await axios.get(`${API}api/conversas`, {
-              headers: { Authorization: `Bearer ${token}` },
-            });
-            setConversas(res2.data || []);
-            const convObj =
-              (res2.data || []).find((c) => c.id === conversaId) || {
-                id: conversaId,
-                eh_ia: false,
-                nome: "Usuário",
-                photo: "/images/default-user.jpg",
-              };
-            await carregarConversa(convObj);
-          }
-          return;
-        }
-
-        // 3) sem param: se lista vazia -> cria conversa IA; se não, seleciona a primeira
-        if ((lista || []).length === 0) {
-          const createRes = await axios.post(
-            `${API}api/conversas`,
-            { eh_ia: true },
-            { headers: { Authorization: `Bearer ${token}` } }
-          );
-          const conversaId = createRes.data.conversaId;
-          const res2 = await axios.get(`${API}api/conversas`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          setConversas(res2.data || []);
-          const convObj =
-            (res2.data || []).find((c) => c.id === conversaId) || {
-              id: conversaId,
-              eh_ia: true,
-              nome: "ChatBox AI",
-              photo: "/images/favicon.png",
-            };
-          carregarConversa(convObj);
-        } else {
-          carregarConversa(lista[0]);
-        }
-      } catch (err) {
-        console.error("Erro init chat:", err.response?.data || err.message);
-      }
-    };
-
-    init();
-
-    // cleanup do interval se desmoutar
+    initChat();
     return () => {
       if (typingIntervalRef.current) clearInterval(typingIntervalRef.current);
     };
   }, [Authenticated, paramUserId]);
 
-  // Função para carregar mensagens de uma conversa (por objecto converse)
+  // ----------------------------------------------------------------------------------------------
+
+  const initChat = async () => {
+    try {
+      const res = await axios.get(`${API}api/conversas`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const lista = res.data || [];
+      setConversas(lista);
+
+      const usersRes = await axios.get(`${API}api/usuarios`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const outrosUsuarios = usersRes.data.filter(u => u.id !== Authenticated.id);
+      setTodosUsuarios(outrosUsuarios);
+
+      if (paramUserId) {
+        await criarConversaSeNecessario(paramUserId);
+        return;
+      }
+
+      if (lista.length === 0) {
+        const createRes = await axios.post(
+          `${API}api/conversas`,
+          { eh_ia: true },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        const conversaId = createRes.data.conversaId;
+        const convIA = { id: conversaId, eh_ia: true, nome: "ChatBox AI", photo: "/images/favicon.png" };
+        setConversas([convIA]);
+        await carregarConversa(convIA);
+      } else {
+        await carregarConversa(lista[0]);
+      }
+
+    } catch (err) {
+      console.error("Erro ao iniciar Chat:", err.response?.data || err.message);
+    }
+  };
+
+  const criarConversaSeNecessario = async (param) => {
+    let conversaId;
+    try {
+      setFullLoading(true);
+      const numeric = Number(param);
+      const isIA = param.toLowerCase?.() === 'ia';
+
+      if (isIA) {
+        const res = await axios.post(
+          `${API}api/conversas`,
+          { eh_ia: true },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        conversaId = res.data.conversaId;
+      } else {
+        if (isNaN(numeric)) return navigate("/chat");
+        const res = await axios.post(
+          `${API}api/conversas`,
+          { destinatarioId: numeric, eh_ia: false },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        conversaId = res.data.conversaId;
+      }
+
+      const convRes = await axios.get(`${API}api/conversas`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setConversas(convRes.data || []);
+      const convObj = (convRes.data || []).find(c => c.id === conversaId);
+      await carregarConversa(convObj);
+    }
+    catch (err) {
+      console.error("Erro criar conversa pela URL:", err);
+    }
+    finally {
+      setFullLoading(false);
+    }
+  };
+
   const carregarConversa = async (conversaObj) => {
-    if (!conversaObj || !conversaObj.id) return;
-    setErro(null);
+    if (!conversaObj?.id) return;
     setConversa([]);
     setConversaSelecionada(conversaObj);
+    setErro(null);
 
     try {
       const res = await axios.get(
         `${API}api/conversas/${conversaObj.id}/mensagens`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      // API devolve { sender: 'user' | 'outro', texto, ... }
-      const msgs = (res.data || []).map((m) => ({
-        sender: m.sender === "user" ? "user" : conversaObj.eh_ia ? "ia" : "outro",
-        text: m.texto || m.text || "",
+      const msgs = (res.data || []).map(m => ({
+        sender: m.sender === 'user' ? 'user' : (conversaObj.eh_ia ? 'ia' : 'outro'),
+        text: m.texto,
         remetente_id: m.remetente_id,
         enviada_em: m.enviada_em,
       }));
       setConversa(msgs);
+
     } catch (err) {
-      console.error("Erro ao carregar conversa:", err.response?.data || err.message);
+      console.error("Erro ao carregar conversa:", err);
       setErro("Erro ao carregar a conversa.");
     }
   };
 
-  // Enviar mensagem
+  const iniciarNovaConversa = async (destinatarioId) => {
+    try {
+      setFullLoading(true);
+      const res = await axios.post(
+        `${API}api/conversas`,
+        { destinatarioId, eh_ia: false },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const newId = res.data.conversaId;
+      const convRes = await axios.get(`${API}api/conversas`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setConversas(convRes.data || []);
+      const newConv = (convRes.data || []).find(c => c.id === newId);
+      setShowUsuarios(false);
+      await carregarConversa(newConv);
+    } catch (err) {
+      console.error("Erro ao iniciar conversa:", err);
+    } finally {
+      setFullLoading(false);
+    }
+  };
+
   const enviarMensagem = async (e) => {
     e.preventDefault();
-    if (!mensagem.trim() || loading) return;
-    if (!conversaSelecionada) {
-      setErro("Selecione uma conversa primeiro.");
-      return;
-    }
+    if (!mensagem.trim() || !conversaSelecionada) return;
 
     const entradaUser = { sender: "user", text: mensagem };
-    const placeholder = { sender: conversaSelecionada.eh_ia ? "ia" : "outro", text: "Digitando..." };
-    setConversa((prev) => [...prev, entradaUser, placeholder]);
+    const placeholder = {
+      sender: conversaSelecionada.eh_ia ? "ia" : "outro",
+      text: "Digitando..."
+    };
+
+    setConversa(prev => [...prev, entradaUser, placeholder]);
     setMensagem("");
-    setErro(null);
     setLoading(true);
 
-    // typing animation
     let pontos = 1;
     typingIntervalRef.current = setInterval(() => {
-      setConversa((prev) => {
+      setConversa(prev => {
         const nova = [...prev];
         nova[nova.length - 1].text = "Processando" + ".".repeat(pontos);
         pontos = pontos < 3 ? pontos + 1 : 1;
@@ -203,21 +205,19 @@ function Chat() {
         { texto: mensagem },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       clearInterval(typingIntervalRef.current);
       typingIntervalRef.current = null;
       const respostaIA = res.data.ia;
-      const novaMensagem = respostaIA
+      const nova = respostaIA
         ? { sender: "ia", text: respostaIA }
         : { sender: "outro", text: "" };
+      setConversa(prev => [...prev.slice(0, -1), nova]);
 
-      setConversa((prev) => [...prev.slice(0, -1), novaMensagem]);
     } catch (err) {
       clearInterval(typingIntervalRef.current);
       typingIntervalRef.current = null;
-      setErro("Erro ao enviar a mensagem.");
-      setConversa((prev) => [...prev.slice(0, -1), { sender: "ia", text: "Erro ao enviar." }]);
-      console.error("Erro enviar mensagem:", err.response?.data || err.message);
+      setConversa(prev => [...prev.slice(0, -1), { sender: "ia", text: "Erro ao enviar." }]);
+      console.error("Erro ao enviar:", err);
     } finally {
       setLoading(false);
     }
@@ -225,8 +225,21 @@ function Chat() {
 
   if (!Authenticated) return null;
 
+  /* ------ FILTRAR USUÁRIOS QUE AINDA NÃO TÊM CONVERSA -------- */
+  const usuariosSemConversa = todosUsuarios.filter(user =>
+    !conversas.some(c => !c.eh_ia && c.nome === user.nome)
+  );
+
+  /* -------------------------------- UI -------------------------------- */
+
   return (
     <div className="chat__wrapper">
+      {fullLoading && (
+        <div className="overlay__spinner">
+          <span className="loader"></span>
+        </div>
+      )}
+
       <aside className="chat__sidebar">
         {conversas.map((c) => (
           <div
@@ -238,6 +251,28 @@ function Chat() {
             <span>{c.nome}</span>
           </div>
         ))}
+
+        <button
+          className={`btn_new ${showUsuarios ? 'opened' : ''}`}
+          onClick={() => setShowUsuarios((prev) => !prev)}
+        >
+          {showUsuarios ? "Fechar Lista" : "Novo Chat"}
+        </button>
+
+        {showUsuarios && (
+          usuariosSemConversa.length > 0 ? (
+            usuariosSemConversa.map((u) => (
+              <div key={u.id} className="user__card" onClick={() => iniciarNovaConversa(u.id)}>
+                <img src={u.photo || '/images/default-user.png'} alt={u.nome} />
+                <span>{u.nome}</span>
+              </div>
+            ))
+          ) : (
+            <p style={{ fontSize: ".8rem", color: "#555", marginTop: ".5rem" }}>
+              Nenhum usuário novo para conversar.
+            </p>
+          )
+        )}
       </aside>
 
       <div className="chat__container">
@@ -250,14 +285,14 @@ function Chat() {
           </div>
 
           {!conversaSelecionada && (
-            <p style={{ color: "red", marginTop: "1rem", textAlign: "center", fontSize: ".9rem" }}>
-              Selecione uma conversa para começar.
+            <p style={{ color: "red", marginTop: "1rem", textAlign: "center" }}>
+              Selecione ou inicie uma conversa para começar
             </p>
           )}
 
           <div className="chat__mensagens" ref={mensagensRef}>
             {conversa.map((msg, i) => {
-              const fotoRemetente =
+              const fotoRem =
                 msg.sender === "user"
                   ? Authenticated.photo || "/images/default-user.jpg"
                   : conversaSelecionada?.eh_ia
@@ -266,8 +301,7 @@ function Chat() {
 
               return (
                 <div key={i} className={`chat__mensagem ${msg.sender}`}>
-                  <img src={fotoRemetente} alt={msg.sender} className="chat__avatar" />
-
+                  <img src={fotoRem} alt={msg.sender} className="chat__avatar" />
                   <span className="chat__texto">
                     {msg.text}
                     {msg.sender === "user" && <FaCheck className="chat__check" />}
@@ -275,6 +309,7 @@ function Chat() {
                 </div>
               );
             })}
+
             {erro && <div className="chat__erro">⚠️ {erro}</div>}
           </div>
 
@@ -287,7 +322,11 @@ function Chat() {
               disabled={loading}
             />
             <button type="submit" disabled={loading || !mensagem.trim()}>
-              {loading ? <span className="loader" /> : <img src="/icons/send.svg" alt="Enviar" className="send__icon" />}
+              {loading ? (
+                <span className="loader" style={{ width: 22, height: 22, borderWidth: 3 }} />
+              ) : (
+                <img src="/icons/send.svg" alt="Enviar" className="send__icon" />
+              )}
             </button>
           </form>
         </div>

@@ -10,7 +10,6 @@ import Footer from './features/landing/footer/Footer';
 import Login from './features/auth/login/Login';
 import Sign from './features/auth/sign/Sign';
 import Chat from './features/chat/Chat';
-import ListUsers from './features/landing/listUsers/ListUsers';
 import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -32,7 +31,6 @@ function App() {
             <Hero />
             <Banner />
             <Reasons />
-            <ListUsers />
             <Destaks />
             <Final />
             <Footer />
