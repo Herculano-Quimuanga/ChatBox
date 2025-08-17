@@ -180,24 +180,26 @@ function Chat() {
     if (!mensagem.trim() || !conversaSelecionada) return;
 
     const entradaUser = { sender: "user", text: mensagem };
-    const placeholder = {
-      sender: conversaSelecionada.eh_ia ? "ia" : "outro",
-      text: "Digitando..."
-    };
 
-    setConversa(prev => [...prev, entradaUser, placeholder]);
+    setConversa(prev => [...prev, entradaUser]);
     setMensagem("");
-    setLoading(true);
 
-    let pontos = 1;
-    typingIntervalRef.current = setInterval(() => {
-      setConversa(prev => {
-        const nova = [...prev];
-        nova[nova.length - 1].text = "Processando" + ".".repeat(pontos);
-        pontos = pontos < 3 ? pontos + 1 : 1;
-        return nova;
-      });
-    }, 400);
+    // Se for IA, adiciona placeholder e animação
+    if (conversaSelecionada.eh_ia) {
+      const placeholder = { sender: "ia", text: "Digitando..." };
+      setConversa(prev => [...prev, placeholder]);
+
+      setLoading(true);
+      let pontos = 1;
+      typingIntervalRef.current = setInterval(() => {
+        setConversa(prev => {
+          const nova = [...prev];
+          nova[nova.length - 1].text = "Processando" + ".".repeat(pontos);
+          pontos = pontos < 3 ? pontos + 1 : 1;
+          return nova;
+        });
+      }, 400);
+    }
 
     try {
       const res = await axios.post(
@@ -205,18 +207,26 @@ function Chat() {
         { texto: mensagem },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      clearInterval(typingIntervalRef.current);
-      typingIntervalRef.current = null;
-      const respostaIA = res.data.ia;
-      const nova = respostaIA
-        ? { sender: "ia", text: respostaIA }
-        : { sender: "outro", text: "" };
-      setConversa(prev => [...prev.slice(0, -1), nova]);
+
+      // Se for IA, substituir o placeholder
+      if (conversaSelecionada.eh_ia) {
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+
+        const respostaIA = res.data.ia;
+        const nova = respostaIA
+          ? { sender: "ia", text: respostaIA }
+          : { sender: "ia", text: "..." };
+
+        setConversa(prev => [...prev.slice(0, -1), nova]);
+      }
 
     } catch (err) {
-      clearInterval(typingIntervalRef.current);
-      typingIntervalRef.current = null;
-      setConversa(prev => [...prev.slice(0, -1), { sender: "ia", text: "Erro ao enviar." }]);
+      if (conversaSelecionada.eh_ia) {
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+        setConversa(prev => [...prev.slice(0, -1), { sender: "ia", text: "Erro ao enviar." }]);
+      }
       console.error("Erro ao enviar:", err);
     } finally {
       setLoading(false);
@@ -322,12 +332,13 @@ function Chat() {
               disabled={loading}
             />
             <button type="submit" disabled={loading || !mensagem.trim()}>
-              {loading ? (
+              {(loading && conversaSelecionada?.eh_ia) ? (
                 <span className="loader" style={{ width: 22, height: 22, borderWidth: 3 }} />
               ) : (
                 <img src="/icons/send.svg" alt="Enviar" className="send__icon" />
               )}
             </button>
+
           </form>
         </div>
       </div>
