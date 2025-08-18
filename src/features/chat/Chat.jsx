@@ -4,6 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
 import "./chat.css";
 import { FaCheck } from 'react-icons/fa';
+import { FaArrowLeft } from "react-icons/fa";
 
 function Chat() {
   const { Authenticated } = useAuth();
@@ -251,6 +252,7 @@ function Chat() {
       )}
 
       <aside className="chat__sidebar">
+        <h3>Suas conversas</h3>
         {conversas.map((c) => (
           <div
             key={c.id}
@@ -288,7 +290,10 @@ function Chat() {
       <div className="chat__container">
         <div className="chat__content">
           <div className="Chat__Header">
-            <div className="logo" onClick={() => navigate("/")}>
+            <div className="back__button" onClick={() => navigate("/")}>
+              <FaArrowLeft />
+            </div>
+            <div className="logo">
               <img src="/icons/message.svg" alt="ChatBox Logo" />
               <span>ChatBox</span>
             </div>

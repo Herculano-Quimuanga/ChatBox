@@ -35,13 +35,13 @@ function Destaks() {
                         </div>
 
                         <div className="destack__image" data-aos="fade-left" data-aos-duration="1000">
-                            <img src="/images/right-destack.png" alt="" />
+                            <img src="/images/rigth_destack.png" alt="" />
                         </div>
                     </div>
 
                     <div className="destack__content" id="destack">
                         <div className="destack__image" data-aos="fade-right" data-aos-duration="1000">
-                            <img src="/images/left-destack.png" alt="" />
+                            <img src="/images/left_destack.png" alt="" />
                         </div>
                         <div className="destack__text">
                             <h2 className="section__title min">Send messages in <span>Real Time</span>, without any delay between us</h2>

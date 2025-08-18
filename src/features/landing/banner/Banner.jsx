@@ -6,7 +6,7 @@ function Banner() {
         <div className='banner'>
             <div className="banner__image Section__container">
                 <div className="banner__content">
-                    <img src="images/img-banner.png" alt="" data-aos="zoom-in" />
+                    <img src="images/banner.png" alt="" data-aos="zoom-in" />
 
                     <div className="logos__brands">
                         {/* <img src="images/stripe-logo.png" alt="" />
